@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  db:
+    container_name: nomadcities_db
+    image: postgres:16
+    restart: always
+    volumes:
+      - nomadcities-db-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    
+  pgadmin:
+    container_name: nomadcities_pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "5050:5050"
+
+  backend:
+    container_name: nomadcities_backend
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+    build:
+      context: ./backend
+    ports:
+      - "80:80"
+
+  frontend:
+    container_name: nomadcities_frontend
+    restart: always
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+    ports:
+      - "4321:4321"
+
+volumes:
+  nomadcities-db-data:
