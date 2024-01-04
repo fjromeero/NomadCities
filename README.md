@@ -39,5 +39,32 @@ docker-compose logs
 To check the logs of a specific service, add the name of the service, e.g.:
 
 ```bash
-docker-compose logs backend
+docker-compose logs nomadcities_backend
 ```
+
+## Migrations
+To run the migrations you will need to run the migrations with `alembic` commands inside the container.
+
+Make sure you create a "revision" of your models and that you "upgrade" your database with that revision every time you change them. As this is what will update the tables in your database. Otherwise, the application will have errors.
+
+* Start an interactive session in the backend container:
+
+```console
+$ docker-compose exec nomadcities_backend bash
+```
+
+* If you created a new model in `./backend/app/app/models/`, make sure to import it in `./backend/app/app/db/base.py`, that Python module (`base.py`) that imports all the models will be used by Alembic.
+
+* After changing a model (for example, adding a column), inside the container, create the revision, e.g.:
+
+```console
+$ alembic revision --autogenerate -m "First revision"
+```
+
+* After creating the revision, run the migration in the database (this is what will actually change the database):
+
+```console
+$ alembic upgrade head
+```
+
+There is alredy a revision file with the default models on `./backend/app/alembic/versions/`. If you want to remove them / modify them, from the beginning, without having any previous revision, you can remove the revision files and then create a first migration as described above.
