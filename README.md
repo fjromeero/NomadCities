@@ -43,7 +43,7 @@ docker-compose logs nomadcities_backend
 ```
 
 ## Migrations
-To run the migrations you will need to run the migrations with `alembic` commands inside the container.
+To run the migrations you will need to run `alembic` commands inside the container.
 
 Make sure you create a "revision" of your models and that you "upgrade" your database with that revision every time you change them. As this is what will update the tables in your database. Otherwise, the application will have errors.
 
