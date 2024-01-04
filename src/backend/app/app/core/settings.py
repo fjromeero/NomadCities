@@ -13,7 +13,7 @@ class Settings(BaseSettings):
 
     # Create the uri to connect to the database
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
-    def join_db_credentials(self, v: Optional[str], values: Dict[str, Any]) -> Any:
+    def join_db_credentials(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
