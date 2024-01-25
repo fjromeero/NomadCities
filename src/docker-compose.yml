@@ -41,6 +41,8 @@ services:
     restart: always
     depends_on:
       - backend
+    env_file:
+      - .env
     build:
       context: ./frontend
     ports:
