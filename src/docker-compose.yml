@@ -34,7 +34,7 @@ services:
     build:
       context: ./backend
     ports:
-      - "80:80"
+      - "${BACKEND_PORT}:80"
 
   frontend:
     container_name: nomadcities_frontend
