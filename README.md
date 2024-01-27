@@ -84,3 +84,26 @@ $ docker exec nomadcities_backend app/test.sh
 ```
 
 The tests run with Pytest, modify and add tests to `./backend/app/app/tests/`.
+
+## Frontend tests
+#### Local tests
+Start the develpment server with this command:
+
+```console
+$ npm run dev
+```
+
+When your stack is up, run the tests, you can use:
+
+```console
+$ npx cypress run
+```
+
+#### Cypress app
+Alternatively, you can run the tests using the Cypress App, executing the following command:
+
+```console
+$ npx cypress open
+```
+
+Once the Cypress App is launched, choose E2E Testing, then select the browser to be used to run tests.
