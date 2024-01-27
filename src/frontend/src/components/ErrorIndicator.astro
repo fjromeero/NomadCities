@@ -1,12 +1,13 @@
 ---
 interface Props {
+    id: string;
     msg: String;
 }
 
-const { msg } = Astro.props;
+const { msg, id } = Astro.props;
 ---
 
-<div class="error-indicator text-[red] flex font-[0.875rem] mt-2">
+<div id={id} class="error-indicator text-[red] flex font-[0.875rem] mt-2">
     <svg viewBox="0 0 16 16" fill="none" class="w-4 h-4 shrink-0 mr-1" style="block-size: 1.5rem;" xmlns="http://www.w3.org/2000/svg"
         ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
             id="SVGRepo_tracerCarrier"

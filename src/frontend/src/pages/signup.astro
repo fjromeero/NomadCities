@@ -42,7 +42,7 @@ if (Astro.request.method == "POST") {
         }
 
         if (typeof user_data.password !== "string" || user_data.password.length < 8) {
-            errors.password = "Password must be at least 8 characters.";
+            errors.password = "Password must be at least 8 characters";
         }
 
         if (user_data.password !== user_data.confirm) {
@@ -85,7 +85,7 @@ if (Astro.request.method == "POST") {
                         <span>What's your email</span>
                     </label>
                     <input 
-                        type="email" 
+                        type="text" 
                         name="email" 
                         id="signup-email"
                         placeholder="Email address."
@@ -98,7 +98,7 @@ if (Astro.request.method == "POST") {
                             : "inline-size: 100%; box-shadow: inset 0 0 0 1px #727272;"}
                         value={user_data.email}
                     />
-                    {errors.email && <ErrorIndicator msg={errors.email} />}
+                    {errors.email && <ErrorIndicator id="email-error" msg={errors.email} />}
                 </div>
                 <div class="pb-4">
                     <label for="signup-username" class="font-paytoneone text-sm align-middle flex pb-2">
@@ -118,7 +118,7 @@ if (Astro.request.method == "POST") {
                             : "inline-size: 100%; box-shadow: inset 0 0 0 1px #727272;"}
                         value={user_data.username}
                     />
-                    {errors.username && <ErrorIndicator msg={errors.username}/>}
+                    {errors.username && <ErrorIndicator id="username-error" msg={errors.username}/>}
                 </div>
                 <div class="pb-4">
                     <label for="signup-password" class="font-paytoneone text-sm align-middle flex pb-2">
@@ -137,7 +137,7 @@ if (Astro.request.method == "POST") {
                             ? "inline-size: 100%; box-shadow: inset 0 0 0 1px #ff0000;"
                             : "inline-size: 100%; box-shadow: inset 0 0 0 1px #727272;"}
                     />
-                    {errors.password && <ErrorIndicator msg={errors.password} />}
+                    {errors.password && <ErrorIndicator id="password-error" msg={errors.password} />}
                 </div>
                 <div class="pb-4">
                     <label for="signup-confirm" class="font-paytoneone text-sm align-middle flex pb-2">
@@ -156,7 +156,7 @@ if (Astro.request.method == "POST") {
                             ? "inline-size: 100%; box-shadow: inset 0 0 0 1px #ff0000;"
                             : "inline-size: 100%; box-shadow: inset 0 0 0 1px #727272;"}
                     />
-                    {errors.confirm && <ErrorIndicator msg={errors.confirm} />}
+                    {errors.confirm && <ErrorIndicator id="confirm-error" msg={errors.confirm} />}
                 </div>
                 <div class="py-8">
                     <button id="signup-button" class="w-full border-0 rounded-[500px] bg-[#473eb5] py-3">
