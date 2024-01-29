@@ -9,3 +9,7 @@ const validateEmail = (email) => {
 export const isValidEmail = (email) => {
     return validateEmail(email) !== null;
 };
+
+export const getFirstSuperUserCredentials = () => {
+    return {username: "admin", password: "passwd"};
+}
