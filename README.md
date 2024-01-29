@@ -80,7 +80,7 @@ $ docker-compose up --build backend -d
 
 Finally, run the following command to execute the tests:
 ```console
-$ docker exec nomadcities_backend app/test.sh
+$ docker exec nomadcities_backend ./test.sh
 ```
 
 The tests run with Pytest, modify and add tests to `./backend/app/app/tests/`.

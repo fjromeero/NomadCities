@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.db.models.user import User
 from app.models.user import UserOnCreate
 from app.tests.utils.utils import random_string, random_email
+from app.core.settings import settings
 
 def test_create_user(
     client: TestClient, db: Session
@@ -72,3 +73,25 @@ def test_create_existing_email(client: TestClient) -> None:
     )
 
     assert r.status_code == 400
+
+def test_succesful_login(client: TestClient) -> None:
+    # We use the superuser credentials that are automatically created at application startup
+    login_data = {
+        "username": settings.FIRST_SUPERUSER,
+        "password": settings.FIRST_SUPERUSER_PASSWD,
+    }
+
+    r = client.post("/login", data=login_data)
+    assert r.status_code == 200
+    token = r.json()
+    assert "access_token" in token
+
+def test_unsuccesful_login(client: TestClient) -> None:
+    # We use the superuser credentials that are automatically created at application startup
+    login_data = {
+        "username": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "password": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+    }
+
+    r = client.post("/login", data=login_data)
+    assert r.status_code == 401
