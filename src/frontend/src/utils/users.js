@@ -10,3 +10,24 @@ export async function createUser(data) {
         return error.response.data.detail;
     }
 }
+
+export async function login(credentials) {
+
+    const data = new FormData();
+    data.append('username', credentials.username);
+    data.append('password', credentials.password);
+
+    try {
+        const result = await axios.post(`${backendBaseUrl}/login`, data);
+        return {
+            status: result.status,
+            data: result.data
+        };
+
+    }catch (error){
+        return {
+            status: error.response.status,
+            data: "Incorrect username or password.",
+        };
+    }
+}
