@@ -1,8 +1,9 @@
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
+from typing import Dict
 
 from app.db.models.user import User
-from app.models.user import UserOnCreate
+from app.crud.user import search_user_by_username
 from app.tests.utils.utils import random_string, random_email
 from app.core.settings import settings
 
@@ -23,7 +24,7 @@ def test_create_user(
 
     assert 200 <= r.status_code < 300
 
-    user = db.query(User).filter(User.username == username).first()
+    user = search_user_by_username(session=db, username=username)
 
     assert user
     assert r.json() == username
@@ -95,3 +96,10 @@ def test_unsuccesful_login(client: TestClient) -> None:
 
     r = client.post("/login", data=login_data)
     assert r.status_code == 401
+
+def test_get_current_user(client: TestClient,  regular_user_token_headers: Dict[str, str]) -> None:
+    r = client.get("/me", headers=regular_user_token_headers)
+    current_user = r.json()
+    assert current_user
+    assert current_user["username"]=="testuser"
+    assert current_user["email"]=="testuser@email.com"
