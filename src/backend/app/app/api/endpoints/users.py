@@ -64,3 +64,13 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Ses
             user.id, expires_delta=access_token_expires
         )
     )
+
+@router.get("/me")
+async def me(current_user: CurrentUser) -> Any:
+    """
+    Get current user.
+    """
+    return UserOut(
+        username=current_user.username,
+        email=current_user.email,
+    )
