@@ -3,14 +3,16 @@ from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from typing import Any
 
 from app.core.settings import settings
-from app.models.user import UserOnCreate
+from app.api.deps import CurrentUser
+from app.models.user import UserOnCreate, UserOut
 from app.models.token import Token
 from app.db.models.user import User
+from app.crud.user import create_user, search_user_by_username, search_user_by_email
 from app.api.utils import (
     get_db,
-    hash_password,
     verify_password,
     create_access_token,
 )
@@ -22,7 +24,7 @@ async def signup(user_data: UserOnCreate, db: Session = Depends(get_db)):
     """
     Create new user
     """
-    user = db.query(User).filter(User.username == user_data.username).first()
+    user = search_user_by_username(session=db, username=user_data.username)
 
     if user: 
         raise HTTPException(
@@ -30,7 +32,7 @@ async def signup(user_data: UserOnCreate, db: Session = Depends(get_db)):
             detail="This username is alredy linked to an account.",
         )
     
-    user = db.query(User).filter(User.email == user_data.email).first()
+    user = search_user_by_email(session=db, email=user_data.email)
     
     if user:
         raise HTTPException(
@@ -38,17 +40,7 @@ async def signup(user_data: UserOnCreate, db: Session = Depends(get_db)):
             detail="This email is alredy linked to an account.",
         )
     
-    user = User(
-        username = user_data.username,
-        email = user_data.email,
-        hashed_password = hash_password(user_data.password),
-        is_admin = user_data.is_admin,
-        img = user_data.img,
-    )
-
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+    user = create_user(session=db, user_create=user_data)
 
     return user.username
 
@@ -57,7 +49,7 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Ses
     """
     OAuth2 compatible token login with users credentials, get an access token for future requests.
     """
-    user = db.query(User).filter(User.username == user_credentials.username).first()
+    user = search_user_by_username(session=db, username=user_credentials.username)
 
     if not user or not verify_password(user_credentials.password, user.hashed_password):
         raise HTTPException(
