@@ -1,0 +1,21 @@
+---
+import Layout from "./Layout.astro";
+import NonAuthenticatedHeader from "../components/headers/NonAuthenticatedHeader.astro";
+import AuthenticatedHeader from "../components/headers/AuthenticatedHeader.astro";
+
+interface Props {
+    title: string;
+}
+
+const {title} = Astro.props;
+
+let auth = Astro.cookies.has('user')
+---
+
+<Layout title={title}>
+    {auth ? <AuthenticatedHeader/> : <NonAuthenticatedHeader/>}
+    <main class="bg-[#121212] min-w-screen flex flex-grow-3 shrink basis-0 justify-center p-8 pt-20">
+        <slot/>
+    </main>
+</Layout>
+
