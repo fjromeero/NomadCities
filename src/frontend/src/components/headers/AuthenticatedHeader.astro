@@ -1,0 +1,20 @@
+---
+import AppLogo from "../AppLogo.astro";
+import DropDownIcon from "../dropdown/DropDownIcon";
+import DropDownMenu from "../dropdown/DropDownMenu";
+import DropDownItem from "../dropdown/DropDownItem";
+---
+
+<header id="authenticated-header" class="auth-max:pl-8 auth-max:pr-6 py-8 pl-14 pr-10 bg-black flex justify-between">
+    <AppLogo/>
+    <DropDownIcon client:only>
+        <DropDownMenu>
+            <DropDownItem url="/me">
+                Profile
+            </DropDownItem>
+            <DropDownItem url="/logout">
+                Log out
+            </DropDownItem>
+        </DropDownMenu>
+    </DropDownIcon>
+</header>
