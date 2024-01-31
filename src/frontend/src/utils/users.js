@@ -34,7 +34,7 @@ export async function login(credentials) {
 
 export async function getCurrentUser(user_token){
     try{
-        const result = await axios.get("http://localhost:80/me", {
+        const result = await axios.get(`${backendBaseUrl}/me`, {
             headers: {
                 "Authorization": `Bearer ${user_token}`
             }
