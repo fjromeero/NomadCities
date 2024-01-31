@@ -31,3 +31,24 @@ export async function login(credentials) {
         };
     }
 }
+
+export async function getCurrentUser(user_token){
+    try{
+        const result = await axios.get("http://localhost:80/me", {
+            headers: {
+                "Authorization": `Bearer ${user_token}`
+            }
+        });
+
+        return {
+            status: result.status,
+            data: result.data,
+        }
+
+    }catch (error){
+        return {
+            status: error.response.status,
+            data: error.response.data.detail,
+        }
+    }
+}
