@@ -36,7 +36,7 @@ services:
       args:
         INSTALL_DEV: ${INSTALL_DEV-false}
     ports:
-      - "${BACKEND_PORT}:80"
+      - "${EXTERNAL_BACKEND_PORT}:${INTERNAL_BACKEND_PORT}"
 
   frontend:
     container_name: nomadcities_frontend
