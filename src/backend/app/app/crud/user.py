@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from typing import Any
-from app.models.user import UserOnCreate
+from typing import Any, Union, Dict
+from app.models.user import UserOnCreate, UserOnUpdate
 from app.db.models.user import User
 from app.api.utils import hash_password
 
@@ -24,3 +24,19 @@ def search_user_by_username(*, session: Session, username: str) -> Any:
 
 def search_user_by_email(*, session: Session, email: str) -> Any:
     return session.query(User).filter(User.email == email).first()
+
+def update_user_profile(*, session: Session, user_id: int, changes: Union[UserOnUpdate, Dict[str, Any]]) -> User:
+    user = session.query(User).filter(User.id == user_id).first()
+
+    if isinstance(changes, dict):
+        updated_data = changes
+    else:
+        updated_data = changes.dict(exclude_unset=True)
+
+    if user:
+        for key, value in updated_data.items():
+            setattr(user, key, value)
+
+    session.commit()
+
+    session.refresh(user)

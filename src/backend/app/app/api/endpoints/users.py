@@ -6,11 +6,16 @@ from sqlalchemy.orm import Session
 from typing import Any
 
 from app.core.settings import settings
-from app.api.deps import CurrentUser
-from app.models.user import UserOnCreate, UserOut
+from app.api.deps import CurrentUser, SessionDep 
+from app.models.user import UserOnCreate, UserOut, UserOnUpdate
 from app.models.token import Token
-from app.db.models.user import User
-from app.crud.user import create_user, search_user_by_username, search_user_by_email
+from app.crud.user import (
+    create_user,
+    search_user_by_username, 
+    search_user_by_email,
+    update_user_profile, 
+)
+
 from app.api.utils import (
     get_db,
     verify_password,
@@ -74,3 +79,33 @@ async def me(current_user: CurrentUser) -> Any:
         username=current_user.username,
         email=current_user.email,
     )
+
+@router.put("/me")
+async def update_me(session: SessionDep ,current_user: CurrentUser, user_update: UserOnUpdate) -> Any:
+
+    errors = {
+        "username" : "",
+        "email": "", 
+    }
+
+    if(user_update.username != current_user.username):
+        user = search_user_by_username(session=session, username=user_update.username)
+
+        if user: 
+            errors["username"] = "This username is alredy linked to an account."
+            raise HTTPException(
+                status_code=400,
+                detail=errors,
+            )
+    
+    if(user_update.email != current_user.email):
+        user = search_user_by_email(session=session, email=user_update.email)
+
+        if user:
+            errors["email"] = "This email is alredy linked to an account."
+            raise HTTPException(
+                status_code=400,
+                detail=errors,
+            )
+
+    update_user_profile(session=session, user_id=current_user.id, changes=user_update)

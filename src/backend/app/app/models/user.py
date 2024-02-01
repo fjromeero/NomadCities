@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from pydantic import BaseModel, EmailStr
 
 # Base model - Shared properties
@@ -17,3 +17,7 @@ class UserOnCreate(UserBase):
 class UserOut(BaseModel):
     username: str
     email: EmailStr
+
+class UserOnUpdate(BaseModel):
+    email: Union[EmailStr, None] = None
+    username: Union[str, None] = None
