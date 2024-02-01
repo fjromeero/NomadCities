@@ -2,8 +2,8 @@
 import AuthenticationLayout from "../layouts/AuthenticationLayout.astro";
 import ErrorIndicator from "../components/ErrorIndicator.astro";
 import ErrorBanner from "../components/ErrorBanner.astro";
-import { createUser } from "../utils/users";
-import { isValidEmail } from "../utils/utils";
+import { createUser } from "../utils/server/users";
+import { isValidEmail } from "../utils/server/utils";
 
 const errors = {
     username: "",

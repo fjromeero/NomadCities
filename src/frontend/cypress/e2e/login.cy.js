@@ -1,4 +1,4 @@
-import { getFirstSuperUserCredentials } from "../../src/utils/utils";
+import { getFirstSuperUserCredentials } from "../../src/utils/server/utils";
 
 describe('Log In page', () => {
 

@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const backendBaseUrl = `http://backend:${process.env.BACKEND_PORT}`;
+const backendBaseUrl = `http://backend:${process.env.INTERNAL_BACKEND_PORT}`;
 
 export async function createUser(data) {
     try {
@@ -32,19 +32,17 @@ export async function login(credentials) {
     }
 }
 
-export async function getCurrentUser(user_token){
+export async function getCurrentUser(userToken){
     try{
         const result = await axios.get(`${backendBaseUrl}/me`, {
             headers: {
-                "Authorization": `Bearer ${user_token}`
+                "Authorization": `Bearer ${userToken}`
             }
         });
-
         return {
             status: result.status,
             data: result.data,
         }
-
     }catch (error){
         return {
             status: error.response.status,

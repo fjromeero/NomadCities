@@ -1,6 +1,6 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import { getCurrentUser } from "../utils/users";
+import { getCurrentUser } from "../utils/server/users";
 
 if (Astro.cookies.has("user")) {
     const userToken = Astro.cookies.get("user").value;
