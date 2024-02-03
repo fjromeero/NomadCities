@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { getCurrentUser } from "../../utils/client/users";
+import { getCurrentUser, updateCurrentUserProfile } from "../../utils/client/users";
+import InputError from "./InputError";
+import { isValidEmail } from "../../utils/server/utils";
 
-export default function UpdateUserProfileForm({ userToken }) {
+export default function UpdateUserProfileForm({ userToken, setSuccessOnUpdate}) {
     const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+    });
+
+    const [errors, setErrors] = useState({
         username: '',
         email: '',
     });
@@ -21,6 +28,26 @@ export default function UpdateUserProfileForm({ userToken }) {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        const fetchUpdateUserData = async () => {
+            const response = await updateCurrentUserProfile(userToken, userData);
+            if(response.status!=200){
+                setErrors({
+                    username: response.data.username,
+                    email: response.data.email,
+                });
+                setSuccessOnUpdate(false);
+            }else{
+                setErrors({username:'', email:''});
+                setSuccessOnUpdate(true);
+            }
+        };
+
+
+        if(!isValidEmail(userData.email)){
+            setErrors({username:'', email:'This address is invalid'})
+        }else{
+            fetchUpdateUserData();   
+        }
     }
 
     return (
@@ -58,6 +85,7 @@ export default function UpdateUserProfileForm({ userToken }) {
                             })
                         }}
                     />
+                    <InputError message={errors.username} className="pt-2"/>
                 </div>
                 <div>
                     <label
@@ -80,6 +108,7 @@ export default function UpdateUserProfileForm({ userToken }) {
                             })
                         }}
                     />
+                    <InputError message={errors.email} className="pt-2"/>
                 </div>
                 <div>
                     <button className="inline-flex items-center px-4 py-2 bg-slate-400 border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-slate-300 transition ease-in-out duration-150">

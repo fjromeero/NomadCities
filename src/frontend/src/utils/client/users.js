@@ -26,3 +26,28 @@ export async function getCurrentUser(userToken){
         console.log(error)
     }
 }
+
+export async function updateCurrentUserProfile(userToken, userData){
+    try{
+        const result = await fetch(`${backendBaseUrl}/me`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if(result.ok){
+            return {status: 200};
+        }else{
+            const errors = await result.json();
+            return {
+                status: result.status,
+                data: errors.detail,
+            };
+        }
+    }catch(error){
+        console.log(error);
+    }
+}
