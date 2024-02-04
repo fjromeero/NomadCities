@@ -111,7 +111,7 @@ export default function UpdateUserProfileForm({ userToken, setSuccessOnUpdate}) 
                     <InputError message={errors.email} className="pt-2"/>
                 </div>
                 <div>
-                    <button className="inline-flex items-center px-4 py-2 bg-slate-400 border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-slate-300 transition ease-in-out duration-150">
+                    <button id="profile-button" className="inline-flex items-center px-4 py-2 bg-slate-400 border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-slate-300 transition ease-in-out duration-150">
                         Save
                     </button>
                 </div>
