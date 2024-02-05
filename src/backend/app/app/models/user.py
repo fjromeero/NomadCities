@@ -21,3 +21,7 @@ class UserOut(BaseModel):
 class UserOnUpdate(BaseModel):
     email: Union[EmailStr, None] = None
     username: Union[str, None] = None
+
+class UserOnUpdatePassword(BaseModel):
+    current_password: str
+    new_password: str

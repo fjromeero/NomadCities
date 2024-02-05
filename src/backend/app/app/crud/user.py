@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
 
 from typing import Any, Union, Dict
-from app.models.user import UserOnCreate, UserOnUpdate
+from app.models.user import UserOnCreate, UserOnUpdate, UserOnUpdatePassword
 from app.db.models.user import User
-from app.api.utils import hash_password
+from app.api.utils import hash_password, verify_password
 
 def create_user(*, session:Session, user_create: UserOnCreate) -> User:
     db_obj = User(
@@ -40,3 +41,17 @@ def update_user_profile(*, session: Session, user_id: int, changes: Union[UserOn
     session.commit()
 
     session.refresh(user)
+
+def update_user_password(*, session: Session, user_id: int, password_changes: UserOnUpdatePassword) -> User:
+    user = session.query(User).filter(User.id == user_id).first()
+
+    if user:
+        if verify_password(password_changes.current_password, user.hashed_password):
+            setattr(user, "hashed_password", hash_password(password_changes.new_password))
+            session.commit()
+            session.refresh(user)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect password",
+            )
