@@ -135,3 +135,26 @@ def test_wrong_update_current_user(client: TestClient, db: Session, regular_user
     assert r.status_code == 400
     response = r.json()
     assert response['detail']['email'] == 'This email is alredy linked to an account.'
+
+def test_update_current_user_password(client: TestClient, db: Session, regular_user_token_headers: Dict[str, str]) -> None:
+    r = client.patch('/me/change-password', headers=regular_user_token_headers, json={
+        "current_password": "passwd",
+        "new_password": "newpasswd",
+    })
+    assert r.status_code == 200
+
+    # Should fail
+    r = client.patch('me/change-password', headers=regular_user_token_headers, json={
+        "current_password": "passwd",
+        "new_password": "newpasswd",
+    })
+    assert r.status_code == 401
+    response = r.json()
+    assert response['detail'] == 'Incorrect password'
+
+    # Should not fail
+    r = client.patch('/me/change-password', headers=regular_user_token_headers, json={
+        "current_password": "newpasswd",
+        "new_password": "passwd",
+    })
+    assert r.status_code == 200
