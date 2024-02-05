@@ -103,3 +103,35 @@ def test_get_current_user(client: TestClient,  regular_user_token_headers: Dict[
     assert current_user
     assert current_user["username"]=="testuser"
     assert current_user["email"]=="testuser@email.com"
+
+def test_update_current_user(client: TestClient, db: Session, regular_user_token_headers: Dict[str, str]) -> None:
+    new_profile_data={
+        "email": random_email(),
+        "username": random_string(),
+    }
+    
+    r = client.put("/me", headers=regular_user_token_headers, json=new_profile_data)
+    assert r.status_code == 200
+    username = search_user_by_username(session=db, username=new_profile_data['username'])
+    assert username.email == new_profile_data["email"]
+
+def test_wrong_update_current_user(client: TestClient, db: Session, regular_user_token_headers: Dict[str, str]) -> None:
+    new_profile_data= {
+        "email": random_email(),
+        "username": "admin",
+    }
+
+    r = client.put("/me", headers=regular_user_token_headers, json=new_profile_data)
+    assert r.status_code==400
+    response = r.json()
+    assert response['detail']['username'] == 'This username is alredy linked to an account.'
+
+    new_profile_data = {
+        "username": random_string(),
+        "email": "admin@email.com",
+    }
+
+    r = client.put('/me', headers=regular_user_token_headers, json=new_profile_data)
+    assert r.status_code == 400
+    response = r.json()
+    assert response['detail']['email'] == 'This email is alredy linked to an account.'
