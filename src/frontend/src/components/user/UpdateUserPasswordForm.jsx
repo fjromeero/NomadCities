@@ -35,8 +35,8 @@ export default function UpdateUserPasswordForm({userToken, setSuccessOnUpdate}) 
                     Ensure your account is using a long, random password to stay secure.
                 </p>
                 <form onSubmit={submitHandler} className="mt-6 space-y-6">
-                    <PasswordInput id="current_pasword" label="Current Password" value={currentPassword} error={error} setPassword={setCurrentPassword}/>
-                    <PasswordInput id="new_pasword" value={newPassword} label="New Password" setPassword={setNewPassword}/>
+                    <PasswordInput id="current-password" label="Current Password" value={currentPassword} error={error} setPassword={setCurrentPassword}/>
+                    <PasswordInput id="new-password" value={newPassword} label="New Password" setPassword={setNewPassword}/>
                     <div>
                         <button id='password-button' className="inline-flex items-center px-4 py-2 bg-[#7066f2] border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-slate-300 transition ease-in-out duration-150">
                             Save
