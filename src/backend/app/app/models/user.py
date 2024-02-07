@@ -5,7 +5,7 @@ from pydantic import BaseModel, EmailStr
 class UserBase(BaseModel):
     username: Optional[str] = None
     email: Optional[EmailStr] = None
-    is_admin: Optional[bool] = True
+    is_admin: Optional[bool] = False
     img: Optional[str] = "path"
 
 # Properties to receive via API on creation
