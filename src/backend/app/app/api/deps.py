@@ -33,3 +33,13 @@ def get_current_user(session: SessionDep, token: TokenDep) -> User:
     return user
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
+
+def get_current_superuser(current: CurrentUser) -> User:
+    if not current.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User must be a superuser"
+        )
+    return current
+
+CurrentSuperUser = Annotated[User, Depends(get_current_superuser)]
