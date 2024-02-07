@@ -4,8 +4,10 @@ import string
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from typing import Dict
+
 from app.models.user import UserOnCreate
 from app.crud.user import create_user, search_user_by_username
+from app.core.settings import settings 
 
 def random_string(k: int = 32) -> str:
     return "".join(random.choices(string.ascii_lowercase, k=k))
@@ -41,3 +43,10 @@ def regular_user_token_auth(*, client: TestClient, db: Session) -> Dict[str, str
         create_user(session=db, user_create=user)
 
     return user_auth_headers(client=client, username=username, password=password)
+
+def superuser_token_auth(*, client: TestClient) -> Dict[str, str]:
+    return user_auth_headers(
+        client=client,
+        username=settings.FIRST_SUPERUSER,
+        password=settings.FIRST_SUPERUSER_PASSWD,
+    )
