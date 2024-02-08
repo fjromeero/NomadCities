@@ -17,6 +17,7 @@ class UserOnCreate(UserBase):
 class UserOut(BaseModel):
     username: str
     email: EmailStr
+    is_admin: bool
 
 class UserOnUpdate(BaseModel):
     email: Union[EmailStr, None] = None

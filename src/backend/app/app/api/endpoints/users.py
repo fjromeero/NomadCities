@@ -84,6 +84,7 @@ async def me(current_user: CurrentUser) -> Any:
     return UserOut(
         username=current_user.username,
         email=current_user.email,
+        is_admin=current_user.is_admin,
     )
 
 @router.put("/me")
