@@ -1,19 +1,8 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import UserProfile from "../components/user/UserProfile"
-import { getCurrentUser } from "../utils/server/users";
 
-// No queremos que accedan las personas sin registrar
-if(!Astro.cookies.has("user")){
-    return Astro.redirect("/");
-}
-
-// Si el token no es valido se cierra sesion
 const userToken = Astro.cookies.get("user").value;
-const response = await getCurrentUser(userToken);
-if(response.status==403){
-    return Astro.redirect("/logout");
-}
 ---
 <MainLayout title="NomadCities - User Profile">
     <UserProfile client:load userToken={userToken}/>

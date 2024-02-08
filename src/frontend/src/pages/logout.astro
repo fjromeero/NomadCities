@@ -1,8 +1,4 @@
 ---
-if(!Astro.cookies.has('user')){
-    return Astro.redirect('/');
-}
-
 Astro.cookies.delete('user');
 return Astro.redirect('/');
 --- 

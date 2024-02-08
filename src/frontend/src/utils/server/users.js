@@ -50,3 +50,10 @@ export async function getCurrentUser(userToken){
         }
     }
 }
+
+export async function isCurrentUserAdmin(userToken){
+    const response = await getCurrentUser(userToken);
+    if(response.status==200){
+        return response.data.is_admin
+    }
+}

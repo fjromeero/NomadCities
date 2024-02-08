@@ -10,10 +10,6 @@ const credentials = {
     remember: "",
 };
 
-if(Astro.cookies.get("user")){
-    return Astro.redirect("/");
-}
-
 if(Astro.request.method == "POST"){
     try {
         const data = await Astro.request.formData();   

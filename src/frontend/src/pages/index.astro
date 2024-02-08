@@ -1,14 +1,5 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import { getCurrentUser } from "../utils/server/users";
-
-if (Astro.cookies.has("user")) {
-    const userToken = Astro.cookies.get("user").value;
-    const response = await getCurrentUser(userToken);
-    if (response.status == 403) {
-        return Astro.redirect("/logout");
-    }
-}
 ---
 
 <MainLayout title="NomadCities" />
