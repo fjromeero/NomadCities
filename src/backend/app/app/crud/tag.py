@@ -21,5 +21,8 @@ def create_user_tag(*, session: Session, new_tag: Tag) -> Any:
             detail="There is alredy a tag with this name",
         )
     
+def get_all_user_tags(*, session: Session) -> Any:
+    return session.query(UserTag).all();
+    
 def search_tag(*, session: Session, name: str) -> Any:
     return session.query(UserTag).filter(UserTag.name == name).first()

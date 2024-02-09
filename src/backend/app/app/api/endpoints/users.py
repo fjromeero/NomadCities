@@ -6,20 +6,15 @@ from sqlalchemy.orm import Session
 from typing import Any
 
 from app.core.settings import settings
-from app.api.deps import CurrentUser, SessionDep, CurrentSuperUser 
+from app.api.deps import CurrentUser, SessionDep
 from app.models.user import UserOnCreate, UserOut, UserOnUpdate, UserOnUpdatePassword
 from app.models.token import Token
-from app.models.tag import Tag
 from app.crud.user import (
     create_user,
     search_user_by_username, 
     search_user_by_email,
     update_user_profile, 
     update_user_password,
-)
-
-from app.crud.tag import (
-    create_user_tag
 )
 
 from app.api.utils import (
@@ -120,7 +115,3 @@ async def update_me(session: SessionDep ,current_user: CurrentUser, user_update:
 @router.patch('/me/change-password')
 async def change_password_me(session: SessionDep, current_user: CurrentUser, password_changes: UserOnUpdatePassword) -> Any:
     update_user_password(session=session, user_id=current_user.id, password_changes=password_changes)
-
-@router.post('/usertag/create')
-async def user_tag_create(session: SessionDep, current_superuser: CurrentSuperUser, tag: Tag) -> Any:
-    return create_user_tag(session=session, new_tag=tag)
