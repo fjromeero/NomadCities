@@ -161,7 +161,7 @@ def test_update_current_user_password(client: TestClient, db: Session, regular_u
 
 def test_create_user_tag(client: TestClient, db: Session, superuser_token_headers: Dict[str, str]) -> None:
     r = client.post('usertag/create', headers=superuser_token_headers, json={
-        "name": random_string(),
+        "name": random_string(k=10),
     })
 
     assert r.status_code == 200
@@ -169,7 +169,7 @@ def test_create_user_tag(client: TestClient, db: Session, superuser_token_header
     assert search_tag(session=db, name=tag["name"])
 
 def test_create_existing_tag(client: TestClient, superuser_token_headers: Dict[str, str]) -> None:
-    tag_name = random_string()
+    tag_name = random_string(k=10)
     r = client.post('usertag/create', headers=superuser_token_headers, json={
         "name": tag_name,
     })
