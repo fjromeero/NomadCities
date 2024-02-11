@@ -45,6 +45,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
         const token = context.cookies.get('user').value;
         const validation = await verifyAuth(token);
 
+        if(context.url.pathname==='/logout'){
+            return next();
+        }
+
         switch (validation.status) {
             case 200:
                 if(ADMIN_ROUTES.includes(context.url.pathname)){

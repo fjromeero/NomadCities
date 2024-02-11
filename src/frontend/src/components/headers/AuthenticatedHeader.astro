@@ -3,6 +3,12 @@ import AppLogo from "../AppLogo.astro";
 import DropDownIcon from "../dropdown/DropDownIcon";
 import DropDownMenu from "../dropdown/DropDownMenu";
 import DropDownItem from "../dropdown/DropDownItem";
+
+interface Props {
+    isAdmin: boolean;
+}
+
+const {isAdmin} = Astro.props;
 ---
 
 <header id="authenticated-header" class="auth-max:pl-8 auth-max:pr-6 py-8 pl-14 pr-10 bg-black flex justify-between">
@@ -12,6 +18,7 @@ import DropDownItem from "../dropdown/DropDownItem";
             <DropDownItem url="/me">
                 Profile
             </DropDownItem>
+            {isAdmin && <DropDownItem url="/admin">Admin panel</DropDownItem>}
             <DropDownItem url="/logout">
                 Log out
             </DropDownItem>
