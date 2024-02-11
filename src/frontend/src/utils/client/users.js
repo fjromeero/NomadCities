@@ -1,8 +1,8 @@
-const backendBaseUrl = `http://localhost:30050`;
+import { CLIENT_BACKEND_BASE_URL } from "./config";
 
 export async function getCurrentUser(userToken){
     try{
-        const result = await fetch(`${backendBaseUrl}/me`, {
+        const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/me`, {
             method: "GET",
             headers: {
                 'Authorization': `Bearer ${userToken}`
@@ -29,7 +29,7 @@ export async function getCurrentUser(userToken){
 
 export async function updateCurrentUserProfile(userToken, userData){
     try{
-        const result = await fetch(`${backendBaseUrl}/me`, {
+        const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/me`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${userToken}`,
@@ -54,7 +54,7 @@ export async function updateCurrentUserProfile(userToken, userData){
 
 export async function updateCurrentUserPassword(userToken, currentPassword, newPassword){
     try{
-        const result = await fetch(`${backendBaseUrl}/me/change-password`, {
+        const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/me/change-password`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${userToken}`,

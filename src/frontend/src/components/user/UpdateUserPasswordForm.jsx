@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import { updateCurrentUserPassword } from "../../utils/client/users";
+import { updateCurrentUserPassword } from "../../utils/client/Users";
 
 export default function UpdateUserPasswordForm({userToken, setSuccessOnUpdate}) {
     const [currentPassword, setCurrentPassword] = useState("");

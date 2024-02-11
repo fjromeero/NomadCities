@@ -1,0 +1,1 @@
+export const CLIENT_BACKEND_BASE_URL = `http://localhost:30050`;

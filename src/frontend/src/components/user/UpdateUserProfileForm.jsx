@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCurrentUser, updateCurrentUserProfile } from "../../utils/client/users";
+import { getCurrentUser, updateCurrentUserProfile } from "../../utils/client/Users";
 import InputError from "./InputError";
 import { isValidEmail } from "../../utils/server/utils";
 
