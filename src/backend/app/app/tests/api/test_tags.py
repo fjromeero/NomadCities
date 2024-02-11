@@ -33,3 +33,29 @@ def test_create_tag_regular_user(client: TestClient, regular_user_token_headers:
     assert r.status_code == 400
     response = r.json()
     assert response["detail"]=='User must be a superuser'
+
+def test_add_new_tags_to_user(client: TestClient, regular_user_token_headers: Dict[str, str]) -> None:
+    r = client.patch('usertag/me/add', headers=regular_user_token_headers, json={
+        "tags": [
+            {
+                "name": name_tag
+            }
+        ]
+    })
+
+    assert r.status_code==200
+    response = r.json()
+    assert name_tag in response
+
+def test_remove_tag_from_user(client: TestClient, db: Session, regular_user_token_headers: Dict[str, str]) -> None:
+    r = client.patch('usertag/me/remove', headers=regular_user_token_headers, json={
+        "tags": [
+            {
+                "name": name_tag
+            }
+        ]
+    })
+
+    assert r.status_code==200
+    response = r.json()
+    assert name_tag in response
