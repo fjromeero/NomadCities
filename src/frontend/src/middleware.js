@@ -54,6 +54,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
                     }
                 }
                 return next();
+            case 403:
+                return Response.redirect(new URL("/logout", context.url));
             default:
                 return Response.redirect(new URL("/", context.url));
         }
