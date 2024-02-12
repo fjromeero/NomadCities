@@ -31,6 +31,8 @@ services:
       - db
     env_file:
       - .env
+    volumes:
+      - nomadcities_backend_images:/app/static
     build:
       context: ./backend
       args:
@@ -52,3 +54,4 @@ services:
 
 volumes:
   nomadcities-db-data:
+  nomadcities_backend_images:
