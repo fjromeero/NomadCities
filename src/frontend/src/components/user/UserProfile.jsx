@@ -2,6 +2,7 @@ import UpdateUserProfileForm from "./UpdateUserProfileForm";
 import UpdateUserPasswordForm from "./UpdateUserPasswordForm";
 import SuccessBanner from "./SuccessBanner";
 import { useState } from "react";
+import CurrentUserTags from "./CurrentUserTags";
 
 export default function UserProfile({userToken}){
 
@@ -16,6 +17,9 @@ export default function UserProfile({userToken}){
                 </div>
                 <div className="pr-80 bg-black shadow shadow-[101010] rounded-lg auth-max:pr-0">
                     <UpdateUserPasswordForm userToken={userToken} setSuccessOnUpdate={setSuccessOnUpdate}/>
+                </div>
+                <div className="pr-80 bg-black shadow shadow-[101010] rounded-lg auth-max:pr-0">
+                    <CurrentUserTags user_token={userToken} setSuccessOnUpdate={setSuccessOnUpdate}/>
                 </div>
             </div>
         </div>

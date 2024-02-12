@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import UserTag from "../UserTag";
+import UserTag from "../tag/UserTag";
 import InputError from "../user/InputError";
 import { getAllUserTags, createUserTag } from "../../utils/client/UserTag"
 
