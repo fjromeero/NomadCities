@@ -55,3 +55,15 @@ def update_user_password(*, session: Session, user_id: int, password_changes: Us
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect password",
             )
+
+def update_user_image(*, session: Session, user_id: int, path: str) -> Any:
+    user = session.query(User).filter(User.id == user_id).first()
+    if user:
+        setattr(user, "img", path)
+        session.commit()
+        session.refresh(user)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect password",
+        )

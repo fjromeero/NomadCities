@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from typing import Any
@@ -15,6 +15,7 @@ from app.crud.user import (
     search_user_by_email,
     update_user_profile, 
     update_user_password,
+    update_user_image,
 )
 
 from app.api.utils import (
@@ -81,6 +82,23 @@ async def me(current_user: CurrentUser) -> Any:
         email=current_user.email,
         is_admin=current_user.is_admin,
     )
+
+@router.get("/me/img")
+async def me_img(current_user: CurrentUser) -> Any:
+    return current_user.img
+
+@router.post("/me/img")
+async def update_me_img(session: SessionDep ,current_user: CurrentUser, image: UploadFile):
+    try:
+        path = "static/images/"+image.filename
+        content = await image.read()
+        with open(path, 'wb+') as destination:
+            destination.write(content)
+        update_user_image(session=session, user_id=current_user.id, path=path)
+        return path
+    except Exception as e:
+        return {"error": str(e)}
+
 
 @router.put("/me")
 async def update_me(session: SessionDep ,current_user: CurrentUser, user_update: UserOnUpdate) -> Any:
