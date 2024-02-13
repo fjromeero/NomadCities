@@ -57,3 +57,21 @@ export async function isCurrentUserAdmin(userToken){
         return response.data.is_admin
     }
 }
+
+export async function getCurrentUserImage(userToken){
+    try{
+        const result = await fetch(`${backendBaseUrl}/me/img`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        });
+
+        if(result.ok){
+            const imgLink = await result.json();
+            return `http://localhost:30050/${imgLink}`
+        }
+    } catch(error){
+        console.log(error)
+    }
+}

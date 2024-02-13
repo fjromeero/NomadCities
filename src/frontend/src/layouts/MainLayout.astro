@@ -2,7 +2,7 @@
 import Layout from "./Layout.astro";
 import NonAuthenticatedHeader from "../components/headers/NonAuthenticatedHeader.astro";
 import AuthenticatedHeader from "../components/headers/AuthenticatedHeader.astro";
-import {isCurrentUserAdmin} from "../utils/server/users"
+import {isCurrentUserAdmin, getCurrentUserImage} from "../utils/server/users"
 
 interface Props {
     title: string;
@@ -12,13 +12,15 @@ const {title} = Astro.props;
 
 const auth = Astro.cookies.has('user')
 let isAdmin = false
+let img = ''
 if(auth){
     isAdmin = await isCurrentUserAdmin(Astro.cookies.get('user').value)
+    img = await getCurrentUserImage(Astro.cookies.get('user').value) ?? ''
 }
 ---
 
 <Layout title={title}>
-    {auth ? <AuthenticatedHeader isAdmin={isAdmin}/> : <NonAuthenticatedHeader/>}
+    {auth ? <AuthenticatedHeader isAdmin={isAdmin} img={img}/> : <NonAuthenticatedHeader/>}
     <main class="bg-[#121212] min-w-screen flex flex-grow-3 shrink basis-0 justify-center p-8 pt-20">
         <slot/>
     </main>

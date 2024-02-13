@@ -81,3 +81,43 @@ export async function updateCurrentUserPassword(userToken, currentPassword, newP
         console.log(error)
     }
 }
+
+export async function getCurrentUserImage(userToken){
+    try{
+        const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/me/img`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        });
+
+        if(result.ok){
+            const imgLink = await result.json();
+            return `${CLIENT_BACKEND_BASE_URL}/${imgLink}`
+        }
+    } catch(error){
+        console.log(error)
+    }
+}
+
+export async function updateCurrentUserImage(userToken, img){
+    try{
+        const data = new FormData();
+        data.append('image', img);
+
+        const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/me/img`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            },
+            body: data
+        });
+
+        if(result.ok){
+            const imgLink = await result.json();
+            return `${CLIENT_BACKEND_BASE_URL}/${imgLink}`
+        }
+    } catch(error){
+        console.log(error);
+    }
+}

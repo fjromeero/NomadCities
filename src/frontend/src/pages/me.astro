@@ -1,9 +1,9 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+import AuthenticationLayout from "../layouts/AuthenticationLayout.astro";
 import UserProfile from "../components/user/UserProfile"
 
 const userToken = Astro.cookies.get("user").value;
 ---
-<MainLayout title="NomadCities - User Profile">
+<AuthenticationLayout title="NomadCities - User Profile">
     <UserProfile client:load userToken={userToken}/>
-</MainLayout>
+</AuthenticationLayout>

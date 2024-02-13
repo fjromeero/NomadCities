@@ -6,14 +6,15 @@ import DropDownItem from "../dropdown/DropDownItem";
 
 interface Props {
     isAdmin: boolean;
+    img: string;
 }
 
-const {isAdmin} = Astro.props;
+const {isAdmin, img} = Astro.props;
 ---
 
 <header id="authenticated-header" class="auth-max:pl-8 auth-max:pr-6 py-8 pl-14 pr-10 bg-black flex justify-between">
     <AppLogo/>
-    <DropDownIcon client:only>
+    <DropDownIcon client:only img={img}>
         <DropDownMenu>
             <DropDownItem url="/me">
                 Profile
