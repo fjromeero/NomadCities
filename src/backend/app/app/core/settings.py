@@ -46,8 +46,8 @@ class Settings(BaseSettings):
     # minutes * hours * days
     ACCESS_TOKEN_EXPIRATION_MINUTES = 60 * 24 * 7
 
-    # SECRET KEY FOR JWT. You can also get one by running on a shell:
+    # SECRET KEY FOR JWT. You can change it by running on a shell:
     # openssl rand -hex 32
-    SECRET_KEY = secrets.token_urlsafe(32)
+    SECRET_KEY = "f881d4607b29c5dbbc547fc9b88f46ee51247c9bd66bae08be735a8d2e9fa43c"
 
 settings = Settings()
