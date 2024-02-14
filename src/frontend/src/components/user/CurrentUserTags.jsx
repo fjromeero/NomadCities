@@ -4,19 +4,19 @@ import UserTag from "../tag/UserTag";
 import TagModal from "../tag/TagModal";
 import { getCurrentUserTags } from "../../utils/client/UserTag";
 
-export default function CurrentUserTags({ user_token, setSuccessOnUpdate}) {
+export default function CurrentUserTags({ userToken, setSuccessOnUpdate}) {
     const [tags, setTags] = useState([]);
     const modalRef = useRef();
 
     useEffect(() => {
         const fetchTags = async () => {
-            const result = await getCurrentUserTags(user_token);
+            const result = await getCurrentUserTags(userToken);
             if (result.status == 200) {
                 setTags(result.data.tags)
             }
         }
         fetchTags();
-    }, [user_token])
+    }, [userToken])
 
     return (
         <section className="max-w-2xl w-full p-10 justify-center">
@@ -48,7 +48,7 @@ export default function CurrentUserTags({ user_token, setSuccessOnUpdate}) {
                     Edit tags
                 </button>
             </div>
-            <TagModal ref={modalRef} tags={tags} userToken={user_token} setTags={setTags} setSuccessOnUpdate={setSuccessOnUpdate}/>
+            <TagModal ref={modalRef} tags={tags} userToken={userToken} setTags={setTags} setSuccessOnUpdate={setSuccessOnUpdate}/>
         </section>
     )
 }
