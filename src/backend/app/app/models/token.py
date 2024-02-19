@@ -6,4 +6,4 @@ class Token(BaseModel):
     token_type: str = "bearer"
 
 class TokenPayload(BaseModel):
-    sub: Union[int, None] = None
+    sub: Union[str, None] = None
