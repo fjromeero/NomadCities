@@ -17,10 +17,10 @@ def client() -> Generator:
     with TestClient(app) as c:
         yield c
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def regular_user_token_headers(client: TestClient, db: Session) -> Dict[str, str]:
     return regular_user_token_auth(client=client, db=db)
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def superuser_token_headers(client: TestClient) -> Dict[str, str]:
     return superuser_token_auth(client=client)
