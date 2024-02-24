@@ -157,3 +157,18 @@ def test_update_current_user_password(client: TestClient, db: Session, regular_u
         "new_password": "passwd",
     })
     assert r.status_code == 200
+
+def test_get_current_user_img(client: TestClient, regular_user_token_headers: Dict[str, str]) -> None:
+    r = client.get("/me/img", headers=regular_user_token_headers)
+    assert r.status_code == 200
+    response = r.json()
+    assert response == "static/images/default_pfp.png"
+
+def test_update_current_user_img(client: TestClient, regular_user_token_headers: Dict[str, str]) -> None:
+    with open("static/images/default_pfp.png","rb") as image_file:
+        files = {"image": ("test_profile_pic.png", image_file, "image/png")}
+        r = client.post("/me/img", headers=regular_user_token_headers, files=files)
+
+    assert r.status_code == 200
+    response = r.json()
+    assert response == "static/images/test_profile_pic.png"
