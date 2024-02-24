@@ -27,7 +27,6 @@ async def user_tag_get_all(session: SessionDep) -> Any:
 
 @router.get('/usertag/me')
 async def get_current_user_tags(session: SessionDep, current_user: CurrentUser) -> Any:
-    print(current_user.username)
     tags=search_current_user_tags(session=session, current_user_id=current_user.id)
     tags_list = [Tag(name=item['tag_name']) for item in tags]
 
