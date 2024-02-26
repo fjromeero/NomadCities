@@ -97,7 +97,7 @@ const TagModal = forwardRef(function TagModal({ tags, userToken, setTags, setSuc
                             Assigned tags
                         </h2>
                     </header>
-                    <div>
+                    <div id="assigned-tags">
                         {assignedTags.length === 0 ? (
                             <div className="flex justify-center">
                                 <p className="text-sm text-slate-300">
@@ -122,7 +122,7 @@ const TagModal = forwardRef(function TagModal({ tags, userToken, setTags, setSuc
                             Available Tags
                         </h2>
                     </header>
-                    <div>
+                    <div id="available-tags">
                         {availableTags.length === 0 ? (
                             <div className="flex justify-center">
                                 <p className="text-sm text-slate-300">

@@ -28,7 +28,7 @@ export default function CurrentUserTags({ userToken, setSuccessOnUpdate}) {
                     Check and edit your tags
                 </p>
             </header>
-            <div className="mt-6 space-y-6 p-5 rounded-md border border-[#727272]">
+            <div id="current-tags" className="mt-6 space-y-6 p-5 rounded-md border border-[#727272]">
                 {tags.length === 0 ? (
                     <div className="flex justify-center">
                         <p className="text-sm text-slate-300">
