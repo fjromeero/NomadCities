@@ -68,7 +68,7 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Ses
 
     return Token(
         access_token = create_access_token(
-            user.username , expires_delta=access_token_expires
+            user.id , expires_delta=access_token_expires
         )
     )
 
