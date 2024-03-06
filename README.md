@@ -68,3 +68,42 @@ $ alembic upgrade head
 ```
 
 There is alredy a revision file with the default models on `./backend/app/alembic/versions/`. If you want to remove them / modify them, from the beginning, without having any previous revision, you can remove the revision files and then create a first migration as described above.
+
+## Backend tests
+To run the backend tests, you first need to set the `INSTALL-DEV` environment variable to `true` in the `.env` file.
+
+If your stack is alredy up use:
+
+```console
+$ docker-compose up --build backend -d
+```
+
+Finally, run the following command to execute the tests:
+```console
+$ docker exec nomadcities_backend ./test.sh
+```
+
+The tests run with Pytest, modify and add tests to `./backend/app/app/tests/`.
+
+## Frontend tests
+#### Local tests
+Start the develpment server with this command:
+
+```console
+$ npm run dev
+```
+
+When your stack is up, run the tests, you can use:
+
+```console
+$ npx cypress run
+```
+
+#### Cypress app
+Alternatively, you can run the tests using the Cypress App, executing the following command:
+
+```console
+$ npx cypress open
+```
+
+Once the Cypress App is launched, choose E2E Testing, then select the browser to be used to run tests.

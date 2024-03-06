@@ -1,0 +1,9 @@
+---
+import AuthenticationLayout from "../layouts/AuthenticationLayout.astro";
+import UserProfile from "../components/user/UserProfile"
+
+const userToken = Astro.cookies.get("user").value;
+---
+<AuthenticationLayout title="NomadCities - User Profile">
+    <UserProfile client:load userToken={userToken}/>
+</AuthenticationLayout>
