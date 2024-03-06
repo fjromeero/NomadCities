@@ -1,14 +1,3 @@
-# Unit test / coverage reports
-.tox/
-.coverage
-.cache
-nosetests.xml
-coverage.xml
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-
 # build output
 dist/
 

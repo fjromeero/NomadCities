@@ -1,6 +1,5 @@
-from typing import Any, Dict, Optional, Union, List
-from pydantic import BaseSettings, AnyHttpUrl, PostgresDsn, validator
-import secrets
+from typing import Any, Dict, Optional
+from pydantic import BaseSettings, PostgresDsn, validator
 
 class Settings(BaseSettings):
     # Get the .env vars for the database credentials
@@ -8,19 +7,6 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
-
-    # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
-    # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
-    # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
-
-    @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
 
     # Create a empty uri
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
@@ -39,15 +25,8 @@ class Settings(BaseSettings):
         )
     
     # Get the first superuser credentials
+    # Get the first superuser credentials
     FIRST_SUPERUSER: str
     FIRST_SUPERUSER_PASSWD: str
-
-    # JWT token time expiration
-    # minutes * hours * days
-    ACCESS_TOKEN_EXPIRATION_MINUTES = 60 * 24 * 7
-
-    # SECRET KEY FOR JWT. You can change it by running on a shell:
-    # openssl rand -hex 32
-    SECRET_KEY = "f881d4607b29c5dbbc547fc9b88f46ee51247c9bd66bae08be735a8d2e9fa43c"
 
 settings = Settings()

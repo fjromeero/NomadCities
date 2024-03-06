@@ -31,22 +31,16 @@ services:
       - db
     env_file:
       - .env
-    volumes:
-      - nomadcities_backend_images:/app/static
     build:
       context: ./backend
-      args:
-        INSTALL_DEV: ${INSTALL_DEV-false}
     ports:
-      - "${EXTERNAL_BACKEND_PORT}:${INTERNAL_BACKEND_PORT}"
+      - "80:80"
 
   frontend:
     container_name: nomadcities_frontend
     restart: always
     depends_on:
       - backend
-    env_file:
-      - .env
     build:
       context: ./frontend
     ports:
@@ -54,4 +48,3 @@ services:
 
 volumes:
   nomadcities-db-data:
-  nomadcities_backend_images:

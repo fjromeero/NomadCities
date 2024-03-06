@@ -42,7 +42,6 @@ def upgrade() -> None:
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
-    sa.Column('email', sa.String(), nullable=False),
     sa.Column('hashed_password', sa.String(), nullable=False),
     sa.Column('is_admin', sa.Boolean(), nullable=True),
     sa.Column('img', sa.String(), nullable=True),
@@ -50,7 +49,6 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=False)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
-    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_table('city_suggested',
     sa.Column('id_city', sa.Integer(), nullable=False),
     sa.Column('id_suggestion', sa.Integer(), nullable=False),

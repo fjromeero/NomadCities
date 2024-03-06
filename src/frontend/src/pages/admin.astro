@@ -1,9 +1,0 @@
----
-import MainLayout from "../layouts/MainLayout.astro"
-import AdminDashboard from "../components/admin/AdminDashboard"
-
-const userToken = Astro.cookies.get('user').value
----
-<MainLayout title="NomadCities - Admin Dashboard">
-    <AdminDashboard client:only userToken={userToken}/>
-</MainLayout>../components/admin/AdminDashboard
