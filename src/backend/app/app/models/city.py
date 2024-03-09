@@ -15,7 +15,7 @@ class CityBase(BaseModel):
     name: Optional[str] = None
     country: Optional[str] = None
     continent: Optional[Continents] = None
-    decription: Optional[str] = None
+    description: Optional[str] = None
 
 # Properties to recieve via API on creation
 class CityOnCreate(CityBase):
