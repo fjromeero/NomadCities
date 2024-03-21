@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
 from enum import Enum
+from fastapi import Form
 
 class Continents(str, Enum):
     Africa = "Africa",
@@ -23,3 +24,13 @@ class CityOnCreate(CityBase):
     country: str
     continent: Continents
     description: str
+
+    @classmethod
+    def as_form(
+        cls,
+        name: str = Form(...),
+        country: str = Form(...),
+        continent: Continents = Form(...),
+        description: str = Form(...),
+    ):
+        return cls(name = name, country = country, continent = continent, description = description)
