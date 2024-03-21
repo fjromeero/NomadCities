@@ -162,7 +162,7 @@ def test_get_current_user_img(client: TestClient, regular_user_token_headers: Di
     r = client.get("/me/img", headers=regular_user_token_headers)
     assert r.status_code == 200
     response = r.json()
-    assert response == "static/images/default_pfp.png"
+    assert response == "static/images/users/default_pfp.png"
 
 def test_update_current_user_img(client: TestClient, regular_user_token_headers: Dict[str, str]) -> None:
     with open("static/images/default_pfp.png","rb") as image_file:
