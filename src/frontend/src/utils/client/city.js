@@ -1,14 +1,25 @@
 import { CLIENT_BACKEND_BASE_URL } from "./config";
 
-export async function createCity(userToken, cityData){
+export async function createCity(userToken, cityData, cityImages){
+
+    const formData = new FormData();
+
+    formData.append('name', cityData.name);
+    formData.append('country', cityData.country);
+    formData.append('continent', cityData.continent);
+    formData.append('description', cityData.description);
+
+    for(let i = 0; i < cityImages.length; i++){
+        formData.append('images', cityImages[i]);
+    }
+
     try {
         const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/city`,{
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${userToken}`,
-                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(cityData),
+            body: formData,
         });
 
         if(result.ok){
