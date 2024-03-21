@@ -165,10 +165,10 @@ def test_get_current_user_img(client: TestClient, regular_user_token_headers: Di
     assert response == "static/images/users/default_pfp.png"
 
 def test_update_current_user_img(client: TestClient, regular_user_token_headers: Dict[str, str]) -> None:
-    with open("static/images/default_pfp.png","rb") as image_file:
+    with open("static/images/users/default_pfp.png","rb") as image_file:
         files = {"image": ("test_profile_pic.png", image_file, "image/png")}
         r = client.post("/me/img", headers=regular_user_token_headers, files=files)
 
     assert r.status_code == 200
     response = r.json()
-    assert response == "static/images/test_profile_pic.png"
+    assert response == "static/images/users/test_profile_pic.png"
