@@ -11,3 +11,4 @@ from app.db.models.user_suggested import UserSuggested
 from app.db.models.city_suggested import CitySuggested
 from app.db.models.assign_user import AssignUser
 from app.db.models.assign_city import AssignCity
+from app.db.models.city_image import CityImage
