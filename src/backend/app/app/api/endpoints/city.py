@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from typing import Any, List
 
-from app.api.deps import get_current_superuser, SessionDep
-from app.models.city import CityOnCreate
-from app.crud.city import create_city
-from app.crud.city_image import create_city_images
+from app.api.deps import get_current_user ,get_current_superuser, SessionDep
+from app.models.city import CityOnCreate, CityInspect
+from app.models.city_image import CityImage
+from app.crud.city import create_city, search_city_by_id
+from app.crud.city_image import create_city_images, search_city_images
 
 router = APIRouter()
 
@@ -18,3 +19,30 @@ async def city_create(
     await create_city_images(session=session, city_name=city_created.name, images=images)
 
     return city_created.name
+
+@router.get('/city', dependencies=[Depends(get_current_user)])
+async def get_city(
+    session: SessionDep,
+    city_id: int,
+) -> Any:
+    
+    city = search_city_by_id(session=session, city_id=city_id)
+    images = search_city_images(session=session, city_id=city_id)
+    images_list = [CityImage(path=image.path) for image in images]
+
+    return CityInspect(
+        name=city.name,
+        country=city.country,
+        continent=city.continent,
+        description=city.description,
+        avg_rating = city.avg_rating,
+        avg_price_per_month = city.avg_price_per_month,
+        avg_internet_connection = city.avg_internet_connection,
+        avg_coworking_spaces = city.avg_coworking_spaces,
+        avg_health_service = city.avg_health_service,
+        avg_safety = city.avg_safety,
+        avg_gastronomy = city.avg_gastronomy,
+        avg_means_of_trasnsport = city.avg_means_of_trasnsport,
+        avg_foreign_friendly = city.avg_foreign_friendly,
+        images=images_list,
+    )

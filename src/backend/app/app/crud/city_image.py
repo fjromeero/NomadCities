@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import UploadFile
 
 from app.db.models.city_image import CityImage
-from app.crud.city import search_city_by_name
+from app.crud.city import search_city_by_name, search_city_by_id
 
 async def create_city_images(*, session: Session, city_name: str, images: List[UploadFile]) -> Any:
     for image in images:
@@ -27,3 +27,7 @@ async def create_city_image(*, session: Session, city_name: str, image: UploadFi
             session.refresh(city_image)
         except Exception as e:
             return {"error": str(e)}
+
+def search_city_images(*, session: Session, city_id: int) -> Any:
+    search_city_by_id(session=session, city_id=city_id)
+    return session.query(CityImage).filter(CityImage.id_city==city_id).all()

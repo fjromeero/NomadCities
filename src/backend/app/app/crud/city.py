@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 
 from app.models.city import CityOnCreate
 from app.db.models.city import City
+from app.db.models.city_image import CityImage
 
 def search_city_by_name(*, session: Session, city_name: str) -> Any:
     return session.query(City).filter(City.name==city_name).first()
@@ -26,3 +27,13 @@ def create_city(*, session: Session, new_city: CityOnCreate):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='There is alredy a city with this name'
         )
+    
+def search_city_by_id(*, session: Session, city_id: int) -> Any:
+    city = session.query(City).filter(City.id==city_id).first()
+    if not city:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='There is not a city with this id',
+        )
+    else:
+        return city

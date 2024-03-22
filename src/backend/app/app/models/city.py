@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from enum import Enum
 from fastapi import Form
@@ -34,3 +34,20 @@ class CityOnCreate(CityBase):
         description: str = Form(...),
     ):
         return cls(name = name, country = country, continent = continent, description = description)
+    
+from app.models.city_image import CityImage
+class CityInspect(CityBase):
+    name: str
+    country: str
+    continent: Continents
+    description: str
+    avg_rating: float
+    avg_price_per_month: float
+    avg_internet_connection: float
+    avg_coworking_spaces: float
+    avg_health_service: float
+    avg_safety: float
+    avg_gastronomy: float
+    avg_means_of_trasnsport: float
+    avg_foreign_friendly: float
+    images: List[CityImage]
