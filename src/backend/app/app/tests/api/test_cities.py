@@ -32,4 +32,14 @@ def test_city_creation_exiting(client: TestClient, db: Session, superuser_token_
 
     assert r.status_code == 400
     response = r.json()
-    assert response['detail'] == 'There is alredy a city with this name' 
+    assert response['detail'] == 'There is alredy a city with this name'
+
+def test_city_inspection(client: TestClient, db: Session, regular_user_token_headers: Dict[str, str], test_city_id: int) -> None:
+    r = client.get('city', headers=regular_user_token_headers, params={
+        'city_id': test_city_id
+    })
+
+    assert r.status_code == 200
+    response = r.json()
+    assert response['name']=='testcity'
+    assert response['images'][0]['path'] == 'static/images/users/test_profile_pic.png'
