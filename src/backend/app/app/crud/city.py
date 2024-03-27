@@ -36,3 +36,19 @@ def search_city_by_id(*, session: Session, city_id: int) -> Any:
         )
     else:
         return city
+    
+def update_city_data(*, session: Session, city_id: int, updated_data: CityOnUpdate):
+    city = search_city_by_id(session=session, city_id=city_id)
+    city_exists = search_city_by_name_country(session=session, city_name=updated_data.name, city_country=updated_data.country)
+
+    if city_exists and not city.id == city_exists.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='There is alredy a city with that name-country duo',
+        )
+
+    if city:
+        for key, value in updated_data.dict().items():
+            setattr(city, key, value)
+
+        session.commit()

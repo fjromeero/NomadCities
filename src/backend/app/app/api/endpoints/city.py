@@ -46,3 +46,14 @@ async def get_city(
         avg_foreign_friendly = city.avg_foreign_friendly,
         images=images_list,
     )
+
+@router.put('/city/{id}', dependencies=[Depends(get_current_superuser)])
+async def update_city(
+    session: SessionDep,
+    id: int,
+    updated_data: CityOnUpdate = Depends(CityOnUpdate.as_form),
+    newImages: Optional[List[UploadFile]] = File(None),
+) -> Any:
+    update_city_data(session=session, city_id=id, updated_data=updated_data)
+    if newImages:
+        await create_city_images(session=session, city_id=id, images=newImages)

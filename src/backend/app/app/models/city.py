@@ -51,3 +51,19 @@ class CityInspect(CityBase):
     avg_means_of_trasnsport: float
     avg_foreign_friendly: float
     images: List[CityImage]
+
+class CityOnUpdate(CityBase):
+    name: str
+    country: str
+    continent: Continents
+    description: str
+
+    @classmethod
+    def as_form(
+        cls,
+        name: str = Form(...),
+        country: str = Form(...),
+        continent: Continents = Form(...),
+        description: str = Form(...),
+    ):
+        return cls(id = id,name = name, country = country, continent = continent, description = description)
