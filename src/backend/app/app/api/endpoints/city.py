@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Form
-from typing import Any, List
+from typing import Any, List, Optional
 
 from app.api.deps import get_current_user ,get_current_superuser, SessionDep
-from app.models.city import CityOnCreate, CityInspect
+from app.models.city import CityOnCreate, CityInspect, CityOnUpdate
 from app.models.city_image import CityImage
-from app.crud.city import create_city, search_city_by_id
+from app.crud.city import create_city, search_city_by_id, update_city_data
 from app.crud.city_image import create_city_images, search_city_images
 
 router = APIRouter()
@@ -16,9 +16,9 @@ async def city_create(
     city_data: CityOnCreate = Depends(CityOnCreate.as_form),
 ) -> Any:
     city_created = create_city(session=session, new_city=city_data)
-    await create_city_images(session=session, city_name=city_created.name, images=images)
+    await create_city_images(session=session, city_id=city_created.id , images=images)
 
-    return city_created.name
+    return city_created.id
 
 @router.get('/city', dependencies=[Depends(get_current_user)])
 async def get_city(

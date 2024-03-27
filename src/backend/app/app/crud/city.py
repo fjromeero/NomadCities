@@ -2,15 +2,14 @@ from sqlalchemy.orm import Session
 from typing import Any
 from fastapi import HTTPException, status
 
-from app.models.city import CityOnCreate
+from app.models.city import CityOnCreate, CityOnUpdate
 from app.db.models.city import City
-from app.db.models.city_image import CityImage
 
-def search_city_by_name(*, session: Session, city_name: str) -> Any:
-    return session.query(City).filter(City.name==city_name).first()
+def search_city_by_name_country(*, session: Session, city_name: str, city_country: str) -> Any:
+    return session.query(City).filter(City.name==city_name, City.country == city_country).first()
 
 def create_city(*, session: Session, new_city: CityOnCreate):
-    city = search_city_by_name(session=session, city_name=new_city.name)
+    city = search_city_by_name_country(session=session, city_name=new_city.name, city_country= new_city.country)
     if not city:
         city = City(
             name = new_city.name,
