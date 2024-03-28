@@ -13,7 +13,7 @@ export default function CityInspect({cityData, isAdmin, id}){
     return (
         <div className="w-full">
             <ImageCarrousel images={cityImages} className={" responsive-city-image-min:hidden"}/>
-            <header className="max-w-7xl mx-auto flex justify-between auth-max:items-center">
+            <header className="max-w-7xl mx-auto flex justify-between auth-max:items-center auth-max:mx-5">
                 <div className="responsive-city-image-max:hidden">
                     <h1 className="text-white text-3xl font-semibold font-sans">{cityInfo.name}</h1>
                 </div>
@@ -25,7 +25,7 @@ export default function CityInspect({cityData, isAdmin, id}){
                     )
                 }
             </header>
-            <ImageBento images={cityImages} className={" responsive-city-image-max:hidden"}/>
+            <ImageBento images={cityImages} className={" responsive-city-image-max:hidden auth-max:px-5"}/>
             <InfoSection cityInfo={cityInfo}/>
             <RatingsSection cityRatings={cityRatings}/>
         </div>

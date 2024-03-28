@@ -2,7 +2,7 @@ import CityRatingElement from "./CityRatingElement";
 
 export default function RatingsSection({ cityRatings }) {
     return (
-        <section className="max-w-7xl mx-auto py-8 border-b border-[#DDDDDD]">
+        <section className="max-w-7xl mx-auto py-8 border-b border-[#DDDDDD] auth-max:mx-5">
             <div className="mb-8">
                 <div className="inline-flex items-center">
                     <span className="mr-2">
@@ -10,13 +10,13 @@ export default function RatingsSection({ cityRatings }) {
                     </span>
                     <span className="text-3xl font-semibold text-white">
                         <h2>
-                            <span>{cityRatings.avgRating === 0 ? "Without reviews (for now)" : cityRatings.avgRating}</span>
+                            <span>{cityRatings.avgRating}</span>
                         </h2>
                     </span>
                 </div>
             </div>
             {
-                cityRatings.avgRating !== (
+                
                     <div className="pb-8 mb-8">
                         <div className="grid grid-flow-col overflow-x-auto">
                             <CityRatingElement rating={cityRatings.avgInternetConnection} title={"Internet"}>
@@ -76,7 +76,7 @@ export default function RatingsSection({ cityRatings }) {
                             </CityRatingElement>
                         </div>
                     </div>
-                )
+                
             }
         </section>
     )
