@@ -51,7 +51,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         switch (validation.status) {
             case 200:
-                if(ADMIN_ROUTES.includes(context.url.pathname)){
+                if (ADMIN_ROUTES.includes(context.url.pathname) || ADMIN_ROUTES.some(route => route instanceof RegExp && route.test(context.url.pathname))){
                     const isAdmin = await isCurrentUserAdmin(token);
                     if(!isAdmin){
                         return Response.redirect(new URL("/", context.url));
