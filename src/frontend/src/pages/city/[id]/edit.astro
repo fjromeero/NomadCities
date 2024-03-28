@@ -1,0 +1,19 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import CityEdit from "../../../components/city/CityEdit"
+import { getCityDetails } from "../../../utils/server/city";
+
+const {id} = Astro.params;
+const userToken = Astro.cookies.get("user").value;
+let cityData = {}
+
+const response = await getCityDetails(userToken, id);
+if(response.status!=200){
+    return Astro.redirect('/');
+}else{
+    cityData = response.data;
+}
+---
+<MainLayout title='NomadCities - City'>
+    <CityEdit client:only userToken={userToken} cityData={cityData} id={id}/>
+</MainLayout>
