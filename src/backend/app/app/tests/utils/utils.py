@@ -6,7 +6,10 @@ from sqlalchemy.orm import Session
 from typing import Dict
 
 from app.models.user import UserOnCreate
+from app.models.city import CityOnCreate
+from app.db.models.city_image import CityImage
 from app.crud.user import create_user, search_user_by_username
+from app.crud.city import search_city_by_name, create_city
 from app.core.settings import settings 
 
 def random_string(k: int = 32) -> str:
@@ -50,3 +53,26 @@ def superuser_token_auth(*, client: TestClient) -> Dict[str, str]:
         username=settings.FIRST_SUPERUSER,
         password=settings.FIRST_SUPERUSER_PASSWD,
     )
+
+def test_city_data(*, db: Session) -> int:
+    city_name = 'testcity'
+    city = search_city_by_name(session=db, city_name=city_name)\
+    
+    if not city:
+        city = CityOnCreate(
+            name=city_name,
+            country=random_string(k=7),
+            continent='Europe',
+            description=random_string(k=50),
+        )
+        city = create_city(session=db, new_city=city)
+
+        city_image = CityImage(
+            id_city = city.id,
+            path = 'static/images/users/test_profile_pic.png',
+        )
+        db.add(city_image)
+        db.commit()
+        db.refresh(city_image)
+
+    return city.id

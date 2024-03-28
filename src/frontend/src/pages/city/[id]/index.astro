@@ -1,0 +1,23 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import {getCityDetails} from "../../../utils/server/city";
+import CityInspect from "../../../components/city/CityInspect";
+
+
+const {id} = Astro.params;
+const userToken = Astro.cookies.get("user").value;
+let cityData = {}
+
+const response = await getCityDetails(userToken, id);
+if(response.status!=200){
+    return Astro.redirect('/');
+}else{
+    cityData = response.data;
+}
+
+console.log(response)
+---
+
+<MainLayout title='NomadCities - City'>
+    <CityInspect client:only cityData={cityData}/>
+</MainLayout>

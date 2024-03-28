@@ -28,6 +28,13 @@ def upgrade() -> None:
     sa.Column('description', sa.String(), nullable=False),
     sa.Column('avg_rating', sa.Float(), nullable=False),
     sa.Column('avg_price_per_month', sa.Float(), nullable=False),
+    sa.Column('avg_internet_connection', sa.Float(), nullable=False),
+    sa.Column('avg_coworking_spaces', sa.Float(), nullable=False),
+    sa.Column('avg_health_service', sa.Float(), nullable=False),
+    sa.Column('avg_safety', sa.Float(), nullable=False),
+    sa.Column('avg_gastronomy', sa.Float(), nullable=False),
+    sa.Column('avg_means_of_trasnsport', sa.Float(), nullable=False),
+    sa.Column('avg_foreign_friendly', sa.Float(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_city_continent'), 'city', ['continent'], unique=False)
@@ -41,16 +48,25 @@ def upgrade() -> None:
     op.create_index(op.f('ix_tag_name'), 'tag', ['name'], unique=False)
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('username', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
+    sa.Column('username', sa.String(), nullable=False),
     sa.Column('hashed_password', sa.String(), nullable=False),
     sa.Column('is_admin', sa.Boolean(), nullable=True),
     sa.Column('img', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=False)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
-    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
+    op.create_table('city_image',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('id_city', sa.Integer(), nullable=False),
+    sa.Column('path', sa.String(), nullable=False),
+    sa.ForeignKeyConstraint(['id_city'], ['city.id'], ),
+    sa.PrimaryKeyConstraint('id', 'id_city')
+    )
+    op.create_index(op.f('ix_city_image_id'), 'city_image', ['id'], unique=False)
+    op.create_index(op.f('ix_city_image_id_city'), 'city_image', ['id_city'], unique=False)
     op.create_table('city_suggested',
     sa.Column('id_city', sa.Integer(), nullable=False),
     sa.Column('id_suggestion', sa.Integer(), nullable=False),
@@ -77,6 +93,13 @@ def upgrade() -> None:
     sa.Column('reported', sa.Boolean(), nullable=True),
     sa.Column('polarity', sa.Integer(), nullable=True),
     sa.Column('price_per_month', sa.Float(), nullable=True),
+    sa.Column('internet_connection', sa.Float(), nullable=False),
+    sa.Column('coworking_spaces', sa.Float(), nullable=False),
+    sa.Column('health_service', sa.Float(), nullable=False),
+    sa.Column('safety', sa.Float(), nullable=False),
+    sa.Column('gastronomy', sa.Float(), nullable=False),
+    sa.Column('means_of_trasnsport', sa.Float(), nullable=False),
+    sa.Column('foreign_friendly', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['id_city'], ['city.id'], ),
     sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -147,8 +170,12 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_city_suggested_id_suggestion'), table_name='city_suggested')
     op.drop_index(op.f('ix_city_suggested_id_city'), table_name='city_suggested')
     op.drop_table('city_suggested')
+    op.drop_index(op.f('ix_city_image_id_city'), table_name='city_image')
+    op.drop_index(op.f('ix_city_image_id'), table_name='city_image')
+    op.drop_table('city_image')
     op.drop_index(op.f('ix_user_username'), table_name='user')
     op.drop_index(op.f('ix_user_id'), table_name='user')
+    op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')
     op.drop_index(op.f('ix_tag_name'), table_name='tag')
     op.drop_table('tag')
