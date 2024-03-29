@@ -9,7 +9,7 @@ from app.models.user import UserOnCreate
 from app.models.city import CityOnCreate
 from app.db.models.city_image import CityImage
 from app.crud.user import create_user, search_user_by_username
-from app.crud.city import search_city_by_name, create_city
+from app.crud.city import search_city_by_name_country, create_city
 from app.core.settings import settings 
 
 def random_string(k: int = 32) -> str:
@@ -56,7 +56,8 @@ def superuser_token_auth(*, client: TestClient) -> Dict[str, str]:
 
 def test_city_data(*, db: Session) -> int:
     city_name = 'testcity'
-    city = search_city_by_name(session=db, city_name=city_name)\
+    country=random_string(k=7)
+    city = search_city_by_name_country(session=db, city_name=city_name, city_country=country)
     
     if not city:
         city = CityOnCreate(

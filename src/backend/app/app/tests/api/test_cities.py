@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Dict
 
 from app.tests.utils.utils import random_string
+from app.crud.city import search_city_by_id
 
 city_name = random_string(k=8)
 country = "Spain"
@@ -23,7 +24,8 @@ def test_city_creation(client: TestClient, db: Session, superuser_token_headers:
 
     assert r.status_code == 200
     response = r.json()
-    assert response == city_name
+    city = search_city_by_id(session=db, city_id=response)
+    assert city.name == city_name
 
 def test_city_creation_exiting(client: TestClient, db: Session, superuser_token_headers: Dict[str, str]) -> None:
     with open("static/images/users/default_pfp.png","rb") as image_file:
