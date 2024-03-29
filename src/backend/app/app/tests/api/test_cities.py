@@ -45,3 +45,18 @@ def test_city_inspection(client: TestClient, db: Session, regular_user_token_hea
     response = r.json()
     assert response['name']=='testcity'
     assert response['images'][0]['path'] == 'static/images/users/test_profile_pic.png'
+
+def test_city_update(client: TestClient, db: Session, superuser_token_headers: Dict[str, str], test_city_id: int) -> None:
+    updated_city_name = random_string(k=8)
+    city_data["name"] = updated_city_name
+
+    with open("static/images/users/default_pfp.png","rb") as image_file:
+        files = {"newImages": ("new_test_city_img.png", image_file, "image/png")}
+
+        r = client.put(
+            'city/'+str(test_city_id), 
+            headers=superuser_token_headers, 
+            data=city_data,
+            files=files,
+        )
+    assert r.status_code == 200
