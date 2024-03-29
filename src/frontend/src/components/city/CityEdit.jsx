@@ -75,7 +75,7 @@ export default function CityInspect({ userToken, cityData, id }) {
     return (
         <div className="w-full mb-10">
             <header className="mb-10 auth-max:mb-0">
-                <div className="py-5 pl-20 auth-max:pl-5 auth-max:py-10">
+                <div className="py-5 pl-12 auth-max:pl-5 auth-max:py-10">
                     <a className="flex" href={"/city/" + id}>
                         <svg
                             viewBox="0 0 512 512"

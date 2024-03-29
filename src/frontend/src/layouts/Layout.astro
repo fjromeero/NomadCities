@@ -64,4 +64,44 @@ const { title } = Astro.props;
 			Courier New,
 			monospace;
 	}
+
+	dialog::backdrop {
+		background: rgb(0 0 0 / 0.5);
+	}
+
+	/* Estilos para la barra de desplazamiento */
+	dialog::-webkit-scrollbar {
+		width: 6px; /* Ancho de la barra de desplazamiento */
+	}
+
+	/* Estilos para el riel de la barra de desplazamiento */
+	dialog::-webkit-scrollbar-track {
+		background-color: #333; /* Color de fondo del riel de la barra de desplazamiento */
+		width: 3px;
+	}
+
+	/* Estilos para el mango de la barra de desplazamiento */
+	dialog::-webkit-scrollbar-thumb {
+		background-color: #666; /* Color del mango de la barra de desplazamiento */
+		border-radius: 6px; /* Radio de borde del mango de la barra de desplazamiento */
+	}
+
+	/* Estilos para el botón de aumento de la barra de desplazamiento */
+	dialog::-webkit-scrollbar-button {
+		display: none; /* Ocultar el botón de aumento de la barra de desplazamiento */
+	}
+
+	#rating-scroll::-webkit-scrollbar {
+		height: 7px;
+		background: transparent;  /*make scrollbar space invisible */
+	}
+
+	#rating-scroll::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background: transparent;
+	}
+
+	#rating-scroll:hover::-webkit-scrollbar-thumb {
+		background: #666;
+	}
 </style>
