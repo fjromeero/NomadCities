@@ -55,3 +55,18 @@ export async function getCityDetails(userToken, id) {
         throw error;
     }
 }
+
+export async function getAllCities(){
+    try {
+        const result = await fetch(`${backendBaseUrl}/cities`, {
+            method: 'GET',
+        });
+
+        if (result.ok){
+            const cities = await result.json();
+            return cities
+        }
+    }catch (error){
+        console.log(error)
+    }
+}
