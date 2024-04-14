@@ -60,3 +60,10 @@ def test_city_update(client: TestClient, db: Session, superuser_token_headers: D
             files=files,
         )
     assert r.status_code == 200
+
+def test_get_all_cities(client: TestClient):
+    r = client.get("/cities")
+
+    assert r.status_code == 200
+    response = r.json()
+    assert response['cities']
