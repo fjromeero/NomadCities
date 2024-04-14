@@ -26,10 +26,10 @@ const ImageGallery = forwardRef(function ImageGallery({images}, ref) {
             </header>
             <div className="max-w-7xl mx-auto py-10 auth-max:pb-20 auth-max:pt-0">
                 <div className="max-w-3xl mx-auto">
-                    <div className="grid gap-4 grid-cols-preview auto-rows-preview">
+                    <div className="grid gap-4 grid-cols-preview">
                         {
                             images.map((image, index) => (
-                                <div key={index} className={(index % 3 === 0 || (index === images.length - 1 && images.length % 3 !== 0)) ? 'col-span-2 row-span-2' : ''}>
+                                <div key={index} className={(index % 3 === 0 || (index === images.length - 1 && images.length % 3 !== 0)) ? 'col-span-2 row-span-2 aspect-square' : 'aspect-square'}>
                                     <img className="w-full h-full object-cover" src={image.path} alt={`City images`}/>
                                 </div>
                             ))

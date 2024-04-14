@@ -2,7 +2,7 @@ import CityRatingElement from "./CityRatingElement";
 
 export default function RatingsSection({ cityRatings }) {
     return (
-        <section className="max-w-7xl mx-auto py-8 border-b border-[#DDDDDD]">
+        <section className="max-w-7xl mx-auto py-8 border-b border-[#DDDDDD] auth-max:mx-5">
             <div className="mb-8">
                 <div className="inline-flex items-center">
                     <span className="mr-2">
