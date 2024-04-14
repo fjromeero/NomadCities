@@ -67,3 +67,14 @@ class CityOnUpdate(CityBase):
         description: str = Form(...),
     ):
         return cls(id = id,name = name, country = country, continent = continent, description = description)
+    
+class CityOut(BaseModel):
+    id: int
+    name: str
+    country: str
+    avg_rating: float
+    avg_price_per_month: float
+    image: CityImage
+
+class Cities(BaseModel):
+    cities: List[CityOut]

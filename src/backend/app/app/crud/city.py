@@ -52,3 +52,6 @@ def update_city_data(*, session: Session, city_id: int, updated_data: CityOnUpda
             setattr(city, key, value)
 
         session.commit()
+
+def get_all_cities(*, session: Session) -> Any:
+    return session.query(City).all()

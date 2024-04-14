@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form
 from typing import Any, List, Optional
 
 from app.api.deps import get_current_user ,get_current_superuser, SessionDep
-from app.models.city import CityOnCreate, CityInspect, CityOnUpdate
+from app.models.city import CityOnCreate, CityInspect, CityOnUpdate, Cities, CityOut
 from app.models.city_image import CityImage
-from app.crud.city import create_city, search_city_by_id, update_city_data
+from app.crud.city import create_city, search_city_by_id, update_city_data, get_all_cities
 from app.crud.city_image import create_city_images, search_city_images
 
 router = APIRouter()
@@ -57,3 +57,23 @@ async def update_city(
     update_city_data(session=session, city_id=id, updated_data=updated_data)
     if newImages:
         await create_city_images(session=session, city_id=id, images=newImages)
+
+@router.get('/cities')
+async def cities(session: SessionDep) -> Cities:
+    cities = get_all_cities(session=session)
+    cities_list = []
+    for city in cities:
+        images = search_city_images(session=session, city_id=city.id)
+        image_path = images[0].path if images else ''
+        cities_list.append(
+            CityOut(
+                id= city.id,
+                name=city.name,
+                country=city.country,
+                avg_rating=city.avg_rating,
+                avg_price_per_month=city.avg_price_per_month,
+                image=CityImage(path=image_path),
+            )
+        )
+
+    return Cities(cities=cities_list)
