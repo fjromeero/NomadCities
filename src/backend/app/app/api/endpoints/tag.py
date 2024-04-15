@@ -1,51 +1,68 @@
 from fastapi import APIRouter, Depends
-from typing import Any
+from typing import Any, List
 
 router = APIRouter()
 
 from app.api.deps import (
     SessionDep,
     CurrentUser, 
-    get_current_superuser
+    get_current_superuser,
 )
 from app.models.tag import Tag, Tags
 from app.crud.tag import (
     create_user_tag,
-    get_all_user_tags,
-    search_current_user_tags,
-    assign_tags_to_user,
-    remove_tags_from_user,
+    search_user_tags,
+    search_all_user_tags,
+    assign_user_tag,
+    remove_user_tag
 )
 
-@router.post('/usertag', dependencies=[Depends(get_current_superuser)])
-async def user_tag_create(session: SessionDep, tag: Tag) -> Any:
-    return create_user_tag(session=session, new_tag=tag)
 
 @router.get('/usertag')
-async def user_tag_get_all(session: SessionDep) -> Any:
-    return get_all_user_tags(session=session);
+async def get_all_user_tags(session: SessionDep) -> List[Tag]:
+    tags = search_all_user_tags(session=session)
+    return [Tag(name=tag.name) for tag in tags]
+
+
+@router.post('/usertag', dependencies=[Depends(get_current_superuser)])
+async def user_tag_creation(session: SessionDep, tag: Tag) -> Tag:
+    user_tag = create_user_tag(session=session, new_tag=tag)
+    return Tag(
+        name=user_tag.name
+    )
+
 
 @router.get('/usertag/me')
-async def get_current_user_tags(session: SessionDep, current_user: CurrentUser) -> Any:
-    tags=search_current_user_tags(session=session, current_user_id=current_user.id)
-    tags_list = [Tag(name=item['tag_name']) for item in tags]
+async def get_current_user_tags(session: SessionDep, current_user: CurrentUser) -> Tags:
+    tags = search_user_tags(session=session, user_id=current_user.id)
+    print(tags)
+    tag_list = [Tag(name=tag.name) for tag in tags]
+    return Tags(
+        tags=tag_list
+    )
 
-    # Inicializar una instancia de Tags con la lista de tags creada
-    tags_instance = Tags(tags=tags_list)
-    return tags_instance
 
 @router.patch('/usertag/me/add')
-async def add_tags_current_user(session: SessionDep, current_user: CurrentUser, new_tags: Tags) -> Any:
+async def add_tag_to_user(session: SessionDep, current_user: CurrentUser, new_tags: Tags) -> List[Tag]:
     added_tags = []
     for tag in new_tags.tags:
-        tag = assign_tags_to_user(session=session, user_id=current_user.id, tag_name=tag.name)
-        added_tags.append(tag.tag_name)
+        added_tag = assign_user_tag(session=session, user_id=current_user.id, tag_name=tag.name)
+        if added_tag:
+            added_tags.append(Tag(
+                name=added_tag.name
+            ))
     return added_tags
 
+
 @router.patch('/usertag/me/remove')
-async def remove_tags_current_user(session: SessionDep, current_user: CurrentUser, tags: Tags) -> Any:
+async def remove_tag_from_user(session: SessionDep, current_user: CurrentUser, tags: Tags) -> List[Tag]:
     removed_tags = []
     for tag in tags.tags:
-        tag = remove_tags_from_user(session=session, user_id=current_user.id, tag_name=tag.name)
-        removed_tags.append(tag)
+        removed_tag = remove_user_tag(session=session, user_id=current_user.id, tag_name=tag.name)
+        if removed_tag:
+            removed_tags.append(
+                Tag(
+                    name=removed_tag.name
+                )
+            )
     return removed_tags
