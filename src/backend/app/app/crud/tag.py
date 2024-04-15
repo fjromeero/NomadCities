@@ -3,6 +3,7 @@ from fastapi import HTTPException, status
 from typing import List
 
 from app.db.models.user_tag import UserTag
+from app.db.models.city_tag import CityTag
 from app.db.models.assign_user import AssignUser
 from app.models.tag import Tag
 from app.crud.user import search_user_by_id
@@ -76,4 +77,28 @@ def remove_user_tag(*, session: Session, user_id, tag_name: str) -> UserTag | No
         session.delete(assigned)
         session.commit()
         return tag
+
+
+def search_city_tag_by_name(*, session: Session, tag_name: str) -> CityTag | None:
+    return session.query(CityTag).filter(tag_name == CityTag.name).first();
+
+
+def create_city_tag(*, session: Session, new_tag: Tag):
+    tag = search_city_tag_by_name(session=session, tag_name= new_tag.name)
+    if tag:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="There is a city tag with this name alredy",
+        )
+    else:
+        tag = CityTag(
+            name=new_tag.name
+        )
+        session.add(tag)
+        session.commit()
+        session.refresh(tag)
+        return tag
     
+
+def search_all_city_tags(*, session: Session) -> List[CityTag]:
+    return session.query(CityTag).all()

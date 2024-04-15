@@ -11,8 +11,10 @@ from app.api.deps import (
 from app.models.tag import Tag, Tags
 from app.crud.tag import (
     create_user_tag,
+    create_city_tag,
     search_user_tags,
     search_all_user_tags,
+    search_all_city_tags,
     assign_user_tag,
     remove_user_tag
 )
@@ -66,3 +68,17 @@ async def remove_tag_from_user(session: SessionDep, current_user: CurrentUser, t
                 )
             )
     return removed_tags
+
+
+@router.post('/citytag', dependencies=[Depends(get_current_superuser)])
+async def city_tag_creation(session: SessionDep, tag: Tag) -> Tag:
+    city_tag = create_city_tag(session=session, new_tag=tag)
+    return Tag(
+        name=city_tag.name
+    )
+
+
+@router.get('/citytag')
+async def get_all_city_tags(session: SessionDep) -> List[Tag]:
+    city_tags = search_all_city_tags(session=session)
+    return [Tag(name=tag.name) for tag in city_tags]
