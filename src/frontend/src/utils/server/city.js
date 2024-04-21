@@ -29,7 +29,7 @@ export async function getCityDetails(userToken, id) {
                     avgHealthService: json.avg_health_service,
                     avgSafety: json.avg_safety,
                     avgGastronomy: json.avg_gastronomy,
-                    avgMeansOfTransport: json.avg_means_of_trasnsport,
+                    avgMeansOfTransport: json.avg_means_of_transport,
                     avgForeignFriendly: json.avg_foreign_friendly,
                 },
                 images: json.images.map(obj => {

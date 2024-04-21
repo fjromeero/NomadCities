@@ -48,7 +48,7 @@ class CityInspect(CityBase):
     avg_health_service: float
     avg_safety: float
     avg_gastronomy: float
-    avg_means_of_trasnsport: float
+    avg_means_of_transport: float
     avg_foreign_friendly: float
     images: List[CityImage]
 

@@ -20,6 +20,6 @@ class Comment(Base):
     health_service = Column(Integer, nullable=False)
     safety = Column(Integer, nullable=False)
     gastronomy = Column(Integer, nullable=False)
-    means_of_trasnsport = Column(Integer, nullable=False)
+    means_of_transport = Column(Integer, nullable=False)
     foreign_friendly = Column(Integer, nullable=False)
     stay_length = Column(Integer, nullable=False)

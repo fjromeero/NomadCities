@@ -40,7 +40,7 @@ def create_comment(*, session: Session, id_user: int, comment: CommentOnCreate) 
             health_service = comment.health_service,
             safety = comment.safety,
             gastronomy = comment.gastronomy,
-            means_of_trasnsport = comment.means_of_trasnsport,
+            means_of_transport = comment.means_of_transport,
             foreign_friendly = comment.foreign_friendly,
             stay_length = comment.stay_length,
         )

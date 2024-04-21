@@ -33,7 +33,7 @@ def upgrade() -> None:
     sa.Column('avg_health_service', sa.Float(), nullable=False),
     sa.Column('avg_safety', sa.Float(), nullable=False),
     sa.Column('avg_gastronomy', sa.Float(), nullable=False),
-    sa.Column('avg_means_of_trasnsport', sa.Float(), nullable=False),
+    sa.Column('avg_means_of_transport', sa.Float(), nullable=False),
     sa.Column('avg_foreign_friendly', sa.Float(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
@@ -99,7 +99,7 @@ def upgrade() -> None:
     sa.Column('health_service', sa.Float(), nullable=False),
     sa.Column('safety', sa.Float(), nullable=False),
     sa.Column('gastronomy', sa.Float(), nullable=False),
-    sa.Column('means_of_trasnsport', sa.Float(), nullable=False),
+    sa.Column('means_of_transport', sa.Float(), nullable=False),
     sa.Column('foreign_friendly', sa.Float(), nullable=False),
     sa.Column('stay_length', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_city'], ['city.id'], ),

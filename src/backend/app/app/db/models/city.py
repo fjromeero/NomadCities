@@ -16,5 +16,5 @@ class City(Base):
     avg_health_service = Column(Float, nullable=False, default=0)
     avg_safety = Column(Float, nullable=False, default=0)
     avg_gastronomy = Column(Float, nullable=False, default=0)
-    avg_means_of_trasnsport = Column(Float, nullable=False, default=0)
+    avg_means_of_transport = Column(Float, nullable=False, default=0)
     avg_foreign_friendly = Column(Float, nullable=False, default=0)

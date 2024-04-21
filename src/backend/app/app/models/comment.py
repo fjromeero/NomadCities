@@ -14,7 +14,7 @@ class CommentOnCreate(BaseComment):
     health_service: int = Field(ge=1, le=5)
     safety: int = Field(ge=1, le=5)
     gastronomy: int = Field(ge=1, le=5)
-    means_of_trasnsport: int = Field(ge=1, le=5)
+    means_of_transport: int = Field(ge=1, le=5)
     foreign_friendly: int = Field(ge=1, le=5)
     stay_length: int
 

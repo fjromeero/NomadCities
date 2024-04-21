@@ -42,7 +42,7 @@ async def get_city(
         avg_health_service = city.avg_health_service,
         avg_safety = city.avg_safety,
         avg_gastronomy = city.avg_gastronomy,
-        avg_means_of_trasnsport = city.avg_means_of_trasnsport,
+        avg_means_of_transport = city.avg_means_of_transport,
         avg_foreign_friendly = city.avg_foreign_friendly,
         images=images_list,
     )
