@@ -1,9 +1,11 @@
 from datetime import timedelta, datetime, timezone
+from typing import List, Tuple
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
 from app.models.comment import CommentOnCreate
 from app.db.models.comment import Comment
+from app.db.models.user import User
 from app.crud.city import search_city_by_id
 
 
@@ -54,3 +56,25 @@ def create_comment(*, session: Session, id_user: int, comment: CommentOnCreate) 
             detail='You cannot post a comment for this city at the moment.'
         )
 
+
+def get_city_comments(*, session: Session, city_id: int) -> List[Tuple[Comment, int]]:
+    """
+    Get a list of comments for the city identified by city_id.
+
+    :param session: SQLAlchemy session
+    :param city_id: city id
+
+    :return: list of comments
+    """
+    comments = session.query(Comment, User.username)\
+        .join(User, User.id == Comment.id_user)\
+        .filter(Comment.id_city == city_id)\
+        .all()
+
+    if len(comments) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f'No comments found for city with id {city_id}'
+        )
+    
+    return comments
