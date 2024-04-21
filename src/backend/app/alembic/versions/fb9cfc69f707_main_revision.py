@@ -90,7 +90,7 @@ def upgrade() -> None:
     sa.Column('id_user', sa.Integer(), nullable=False),
     sa.Column('body', sa.Text(), nullable=False),
     sa.Column('date', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-    sa.Column('rating', sa.Integer(), nullable=True),
+    sa.Column('rating', sa.Float(), nullable=True),
     sa.Column('reported', sa.Boolean(), nullable=True),
     sa.Column('polarity', sa.Integer(), nullable=True),
     sa.Column('price_per_month', sa.Float(), nullable=True),
@@ -101,6 +101,7 @@ def upgrade() -> None:
     sa.Column('gastronomy', sa.Float(), nullable=False),
     sa.Column('means_of_trasnsport', sa.Float(), nullable=False),
     sa.Column('foreign_friendly', sa.Float(), nullable=False),
+    sa.Column('stay_length', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_city'], ['city.id'], ),
     sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
