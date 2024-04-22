@@ -9,6 +9,8 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from alembic_utils.pg_function import PGFunction
+from alembic_utils.pg_trigger import PGTrigger
 
 
 # revision identifiers, used by Alembic.
@@ -90,17 +92,17 @@ def upgrade() -> None:
     sa.Column('id_user', sa.Integer(), nullable=False),
     sa.Column('body', sa.Text(), nullable=False),
     sa.Column('date', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-    sa.Column('rating', sa.Float(), nullable=True),
+    sa.Column('rating', sa.Integer(), nullable=True),
     sa.Column('reported', sa.Boolean(), nullable=True),
     sa.Column('polarity', sa.Integer(), nullable=True),
     sa.Column('price_per_month', sa.Float(), nullable=True),
-    sa.Column('internet_connection', sa.Float(), nullable=False),
-    sa.Column('coworking_spaces', sa.Float(), nullable=False),
-    sa.Column('health_service', sa.Float(), nullable=False),
-    sa.Column('safety', sa.Float(), nullable=False),
-    sa.Column('gastronomy', sa.Float(), nullable=False),
-    sa.Column('means_of_transport', sa.Float(), nullable=False),
-    sa.Column('foreign_friendly', sa.Float(), nullable=False),
+    sa.Column('internet_connection', sa.Integer(), nullable=False),
+    sa.Column('coworking_spaces', sa.Integer(), nullable=False),
+    sa.Column('health_service', sa.Integer(), nullable=False),
+    sa.Column('safety', sa.Integer(), nullable=False),
+    sa.Column('gastronomy', sa.Integer(), nullable=False),
+    sa.Column('means_of_transport', sa.Integer(), nullable=False),
+    sa.Column('foreign_friendly', sa.Integer(), nullable=False),
     sa.Column('stay_length', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_city'], ['city.id'], ),
     sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
@@ -145,6 +147,22 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_assign_user_id_user'), 'assign_user', ['id_user'], unique=False)
     op.create_index(op.f('ix_assign_user_id_user_tag'), 'assign_user', ['id_user_tag'], unique=False)
+
+    public_func_update_avg_ratings = PGFunction(
+        schema="public",
+        signature="func_update_avg_ratings()",
+        definition='RETURNS TRIGGER AS $$\nBEGIN\n    UPDATE city\n    SET \n        avg_rating = (SELECT AVG(rating) FROM comment WHERE city.id = NEW.id_city),\n        avg_price_per_month = (SELECT AVG(price_per_month) FROM comment WHERE city.id = NEW.id_city),\n        avg_internet_connection = (SELECT AVG(internet_connection) FROM comment WHERE city.id = NEW.id_city),\n        avg_coworking_spaces = (SELECT AVG(coworking_spaces) FROM comment WHERE city.id = NEW.id_city),\n        avg_health_service = (SELECT AVG(health_service) FROM comment WHERE city.id = NEW.id_city),\n        avg_safety = (SELECT AVG(safety) FROM comment WHERE city.id = NEW.id_city),\n        avg_gastronomy = (SELECT AVG(gastronomy) FROM comment WHERE city.id = NEW.id_city),\n        avg_means_of_transport = (SELECT AVG(means_of_transport) FROM comment WHERE city.id = NEW.id_city),\n        avg_foreign_friendly = (SELECT AVG(foreign_friendly) FROM comment WHERE city.id = NEW.id_city)\n    WHERE id = NEW.id_city;\n    \n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql'
+    )
+    op.create_entity(public_func_update_avg_ratings)
+
+    public_comment_compute_avg_ratings = PGTrigger(
+        schema="public",
+        signature="compute_avg_ratings",
+        on_entity="public.comment",
+        is_constraint=False,
+        definition='AFTER INSERT ON comment\n        FOR EACH ROW\n        EXECUTE FUNCTION func_update_avg_ratings()'
+    )
+    op.create_entity(public_comment_compute_avg_ratings)
     # ### end Alembic commands ###
 
 
@@ -186,4 +204,20 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_city_country'), table_name='city')
     op.drop_index(op.f('ix_city_continent'), table_name='city')
     op.drop_table('city')
+
+    public_comment_compute_avg_ratings = PGTrigger(
+        schema="public",
+        signature="compute_avg_ratings",
+        on_entity="public.comment",
+        is_constraint=False,
+        definition='AFTER INSERT ON comment\n        FOR EACH ROW\n        EXECUTE FUNCTION func_update_avg_ratings()'
+    )
+    op.drop_entity(public_comment_compute_avg_ratings)
+
+    public_func_update_avg_ratings = PGFunction(
+        schema="public",
+        signature="func_update_avg_ratings()",
+        definition='RETURNS TRIGGER AS $$\nBEGIN\n    UPDATE city\n    SET \n        avg_rating = (SELECT AVG(rating) FROM comment WHERE city.id = NEW.id_city),\n        avg_price_per_month = (SELECT AVG(price_per_month) FROM comment WHERE city.id = NEW.id_city),\n        avg_internet_connection = (SELECT AVG(internet_connection) FROM comment WHERE city.id = NEW.id_city),\n        avg_coworking_spaces = (SELECT AVG(coworking_spaces) FROM comment WHERE city.id = NEW.id_city),\n        avg_health_service = (SELECT AVG(health_service) FROM comment WHERE city.id = NEW.id_city),\n        avg_safety = (SELECT AVG(safety) FROM comment WHERE city.id = NEW.id_city),\n        avg_gastronomy = (SELECT AVG(gastronomy) FROM comment WHERE city.id = NEW.id_city),\n        avg_means_of_transport = (SELECT AVG(means_of_transport) FROM comment WHERE city.id = NEW.id_city),\n        avg_foreign_friendly = (SELECT AVG(foreign_friendly) FROM comment WHERE city.id = NEW.id_city)\n    WHERE id = NEW.id_city;\n    \n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql'
+    )
+    op.drop_entity(public_func_update_avg_ratings)
     # ### end Alembic commands ###

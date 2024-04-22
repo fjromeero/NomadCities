@@ -31,6 +31,12 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+# Add alembic_utils trigger and function
+from alembic_utils.replaceable_entity import register_entities
+from app.db.avg_function import compute_avg_ratings, func_update_avg_ratings
+
+register_entities([func_update_avg_ratings, compute_avg_ratings])
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
