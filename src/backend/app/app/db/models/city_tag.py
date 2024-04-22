@@ -7,5 +7,5 @@ class CityTag(Tag):
     id = Column(Integer, ForeignKey('tag.id'), primary_key=True, index=True)
 
     __mapper_args__ = {
-        "polymorphic_identity": "name",
+        "polymorphic_identity": "city",
     }
