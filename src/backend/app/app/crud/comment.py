@@ -66,15 +66,14 @@ def get_city_comments(*, session: Session, city_id: int) -> List[Tuple[Comment, 
 
     :return: list of comments
     """
-    comments = session.query(Comment, User.username)\
-        .join(User, User.id == Comment.id_user)\
-        .filter(Comment.id_city == city_id)\
-        .all()
+    city = search_city_by_id(session=session, city_id=city_id)
 
-    if len(comments) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'No comments found for city with id {city_id}'
-        )
+    comments = []
+
+    if city:
+        comments = session.query(Comment, User.username)\
+            .join(User, User.id == Comment.id_user)\
+            .filter(Comment.id_city == city_id)\
+            .all()
     
     return comments
