@@ -1,19 +1,19 @@
-import {useState} from "react"
+import { useState } from "react"
 
 import ImageBento from "./ImageBento"
 import ImageCarrousel from "./ImageCarrousel"
 import InfoSection from "./InfoSection"
-import RatingsSection from "./RatingSection"
+import RatingScores from "../ratings/RatingScores"
 
-export default function CityInspect({cityData, isAdmin, id}){
+export default function CityInspect({ cityData, isAdmin, comments , id }) {
     const [cityInfo, setCityInfo] = useState(cityData.info);
     const [cityRatings, setCityRatings] = useState(cityData.ratings);
     const [cityImages, setCityImages] = useState(cityData.images);
 
     return (
         <div className="w-full">
-            <ImageCarrousel images={cityImages} className={" responsive-city-image-min:hidden"}/>
-            <header className="max-w-7xl mx-auto flex justify-between auth-max:items-center auth-max:mx-5">
+            <ImageCarrousel images={cityImages} className={" responsive-city-image-min:hidden"} />
+            <header className="max-w-[1400px] mx-auto flex justify-between auth-max:items-center auth-max:mx-5">
                 <div className="responsive-city-image-max:hidden">
                     <h1 className="text-white text-3xl font-semibold font-sans">{cityInfo.name}</h1>
                 </div>
@@ -25,9 +25,28 @@ export default function CityInspect({cityData, isAdmin, id}){
                     )
                 }
             </header>
-            <ImageBento images={cityImages} className={" responsive-city-image-max:hidden auth-max:px-5"}/>
-            <InfoSection cityInfo={cityInfo}/>
-            <RatingsSection cityRatings={cityRatings}/>
+            <ImageBento images={cityImages} className={" responsive-city-image-max:hidden auth-max:px-5"} />
+            <InfoSection cityInfo={cityInfo} />
+            <section className="max-w-[1400px] mx-auto py-8 border-y border-[#DDDDDD]">
+                {
+                    cityRatings.avgRating === 0 ? (
+                        <div className="mb-8">
+                            <div className="inline-flex items-center">
+                                <span className="mr-2">
+                                    <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style={{ "display": "block", "height": "1.25rem", "width": "1.25rem" }}><path fillRule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path></svg>
+                                </span>
+                                <span className="text-3xl font-semibold text-white">
+                                    <h2>
+                                        <span>Without reviews (for now)</span>
+                                    </h2>
+                                </span>
+                            </div>
+                        </div>
+                    ) : (
+                        <RatingScores comments={comments} ratings={cityRatings} flowDefault="row"/>
+                    )
+                }
+            </section>
         </div>
     )
 }
