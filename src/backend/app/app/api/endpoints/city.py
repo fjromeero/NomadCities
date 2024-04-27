@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from typing import Any, List, Optional
 
-from app.api.deps import get_current_user ,get_current_superuser, SessionDep
+from app.api.deps import get_current_superuser, CurrentUser, SessionDep
 from app.models.city import CityOnCreate, CityInspect, CityOnUpdate, Cities, CityOut
 from app.models.city_image import CityImage
 from app.crud.city import create_city, search_city_by_id, update_city_data, get_all_cities
 from app.crud.city_image import create_city_images, search_city_images
+from app.crud.comment import can_post_comment
 
 router = APIRouter()
 
@@ -20,9 +21,10 @@ async def city_create(
 
     return city_created.id
 
-@router.get('/city', dependencies=[Depends(get_current_user)])
+@router.get('/city')
 async def get_city(
     session: SessionDep,
+    current_user: CurrentUser,
     city_id: int,
 ) -> Any:
     
@@ -30,20 +32,22 @@ async def get_city(
     images = search_city_images(session=session, city_id=city_id)
     images_list = [CityImage(path=image.path) for image in images]
 
+
     return CityInspect(
         name=city.name,
         country=city.country,
+        user_can_rate=can_post_comment(session=session, id_user=current_user.id, city_id=city.id),
         continent=city.continent,
         description=city.description,
-        avg_rating = city.avg_rating,
-        avg_price_per_month = city.avg_price_per_month,
-        avg_internet_connection = city.avg_internet_connection,
-        avg_coworking_spaces = city.avg_coworking_spaces,
-        avg_health_service = city.avg_health_service,
-        avg_safety = city.avg_safety,
-        avg_gastronomy = city.avg_gastronomy,
-        avg_means_of_transport = city.avg_means_of_transport,
-        avg_foreign_friendly = city.avg_foreign_friendly,
+        avg_rating = round(city.avg_rating,2),
+        avg_price_per_month = round(city.avg_price_per_month, 2),
+        avg_internet_connection = round(city.avg_internet_connection, 1),
+        avg_coworking_spaces = round(city.avg_coworking_spaces, 1),
+        avg_health_service = round(city.avg_health_service, 1),
+        avg_safety = round(city.avg_safety, 1),
+        avg_gastronomy = round(city.avg_gastronomy, 1),
+        avg_means_of_transport = round(city.avg_means_of_transport, 1),
+        avg_foreign_friendly = round(city.avg_foreign_friendly, 1),
         images=images_list,
     )
 
@@ -70,8 +74,8 @@ async def cities(session: SessionDep) -> Cities:
                 id= city.id,
                 name=city.name,
                 country=city.country,
-                avg_rating=city.avg_rating,
-                avg_price_per_month=city.avg_price_per_month,
+                avg_rating= round(city.avg_rating,2),
+                avg_price_per_month= round(city.avg_price_per_month, 2),
                 image=CityImage(path=image_path),
             )
         )

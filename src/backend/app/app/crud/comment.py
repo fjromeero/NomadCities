@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime, timezone
 from typing import List, Tuple
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
@@ -21,7 +22,7 @@ def can_post_comment(*, session: Session, id_user: int, city_id: int) -> bool:
     :param city_id: city id
     :return: True if the user can post a comment, False otherwise
     """
-    comment = session.query(Comment).filter(Comment.id_user == id_user, Comment.id_city == city_id).first()
+    comment = session.query(Comment).filter(Comment.id_user == id_user, Comment.id_city == city_id).order_by(desc(Comment.date)).first()
     return comment is None or datetime.now(timezone.utc) > comment.date + timedelta(days=30*6)
 
 

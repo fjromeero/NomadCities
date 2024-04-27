@@ -39,6 +39,7 @@ from app.models.city_image import CityImage
 class CityInspect(CityBase):
     name: str
     country: str
+    user_can_rate: bool
     continent: Continents
     description: str
     avg_rating: float
