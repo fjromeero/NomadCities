@@ -40,6 +40,7 @@ export default {
 				'main-3': 'repeat(3, minmax(0, 1fr))',
 				'main-4': 'repeat(2, minmax(0, 1fr))',
 				'main-5': 'repeat(1, minmax(0, 1fr))',
+				'comments-modal': '333px auto',
 			},
 			gridAutoRows: {
 				'bento': 'minmax(100px, 270px)',

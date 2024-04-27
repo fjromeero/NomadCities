@@ -4,6 +4,7 @@ import ImageBento from "./ImageBento"
 import ImageCarrousel from "./ImageCarrousel"
 import InfoSection from "./InfoSection"
 import RatingScores from "../ratings/RatingScores"
+import CommentSection from "./CommentSection"
 
 export default function CityInspect({ cityData, isAdmin, comments , id }) {
     const [cityInfo, setCityInfo] = useState(cityData.info);
@@ -27,7 +28,7 @@ export default function CityInspect({ cityData, isAdmin, comments , id }) {
             </header>
             <ImageBento images={cityImages} className={" responsive-city-image-max:hidden auth-max:px-5"} />
             <InfoSection cityInfo={cityInfo} />
-            <section className="max-w-[1400px] mx-auto py-8 border-y border-[#DDDDDD]">
+            <section className="max-w-[1400px] mx-auto py-8 border-y border-[#DDDDDD] auth-max:mx-5">
                 {
                     cityRatings.avgRating === 0 ? (
                         <div className="mb-8">
@@ -47,6 +48,9 @@ export default function CityInspect({ cityData, isAdmin, comments , id }) {
                     )
                 }
             </section>
+            {
+                comments.length !== 0 && <CommentSection comments={comments} ratings={cityRatings}/>
+            }
         </div>
     )
 }
