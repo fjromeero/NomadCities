@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import UserTag from "../tag/UserTag";
 import InputError from "../user/InputError";
-import { getAllUserTags, createUserTag } from "../../utils/client/UserTag"
+import { getAllUserTags, createUserTag } from "../../utils/client/usertag"
 
 export default function UserTagSection({ userToken, setSuccessOnUpdate}) {
     const [userTags, setUserTags] = useState([]);

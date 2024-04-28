@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import { getCurrentUserImage, updateCurrentUserImage } from "../../utils/client/Users"
+import { getCurrentUserImage, updateCurrentUserImage } from "../../utils/client/users"
 
 export default function CurrentUserProfileImage({ userToken, setSuccessOnUpdate}){
 

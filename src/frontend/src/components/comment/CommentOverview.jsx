@@ -2,7 +2,7 @@ import RatingScores from "../ratings/RatingScores";
 import StarRating from "../ratings/StarRating";
 import dayjs from "dayjs";
 
-export default function CommentOverview({ comments, ratings }) {
+export default function CommentOverview({ comments, ratings, canRate, setCreateComment}) {
     return (
         <div className="grid grid-cols-comments-modal gap-8 responsive-city-image-max:flex responsive-city-image-max:flex-col pb-10">
             <div
@@ -13,6 +13,15 @@ export default function CommentOverview({ comments, ratings }) {
                 }
             >
                 <RatingScores ratings={ratings} comments={comments} />
+                <div className="px-4 py-4">
+                    <button 
+                        onClick={() => setCreateComment(true)} 
+                        className="bg-[#7066f2] disabled:bg-[#7066f2]/[.60] disabled:text-white/[.60] w-full py-3 border-transparent rounded-md font-semibold text-xs uppercase tracking-widest" 
+                        disabled={!canRate}
+                        >
+                        Add new rating
+                    </button>
+                </div>
             </div>
             <div className="pl-6 responsive-city-image-max:px-3">
                 <header
@@ -49,7 +58,7 @@ export default function CommentOverview({ comments, ratings }) {
                                             </div>
                                         </div>
                                     </header>
-                                    <div id="comment-body" className="font-normal text-sm pt-3">
+                                    <div id="comment-body" className="font-normal text-sm pt-3 text-balance">
                                         {
                                             comment.body
                                         }

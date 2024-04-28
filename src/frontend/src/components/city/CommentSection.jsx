@@ -4,7 +4,7 @@ import { useRef } from "react"
 import StarRating from "../ratings/StarRating"
 import CommentModal from "../comment/CommentModal"
 
-export default function CommentSection({ratings, comments}) {
+export default function CommentSection({userToken, cityId, cityName, ratings, comments, canRate}) {
 
     const modalRef = useRef()
 
@@ -44,7 +44,7 @@ export default function CommentSection({ratings, comments}) {
                                         </div>
                                     </div>
                                 </header>
-                                <div id="comment-body" className="font-normal text-sm pt-3">
+                                <div id="comment-body" className="font-normal text-sm pt-3 text-balance">
                                     {
                                         comment.body
                                     }
@@ -59,7 +59,7 @@ export default function CommentSection({ratings, comments}) {
                     {`Show the ${comments.length} ratings`}
                 </button>
             </div>
-            <CommentModal comments={comments} ratings={ratings} ref={modalRef}/>
+            <CommentModal cityId={cityId} cityName={cityName} userToken={userToken} comments={comments} ratings={ratings} canRate={canRate} ref={modalRef}/>
         </section>
     )
 }

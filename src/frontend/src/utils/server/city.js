@@ -37,6 +37,7 @@ export async function getCityDetails(userToken, id) {
                         "path": 'http://localhost:30050/' + obj.path
                     };
                 }),
+                canRate: json.user_can_rate
             }
             return {
                 status: 200,

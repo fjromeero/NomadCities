@@ -1,9 +1,13 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 
 import Modal from "../Modal";
 import CommentOverview from "./CommentOverview";
+import CreateComment from "./CreateComment";
 
-const CommentModal = forwardRef(function CommentModal({comments, ratings}, ref) {
+const CommentModal = forwardRef(function CommentModal({ userToken, cityId, cityName, comments, ratings, canRate}, ref) {
+
+    const [createComment, setCreateComment] = useState(false)
+
     const closeModal = () => {
         ref.current.close();
         document.body.classList.remove("overflow-y-hidden");
@@ -32,7 +36,11 @@ const CommentModal = forwardRef(function CommentModal({comments, ratings}, ref) 
                 </div>
             </header>
             <section className="max-w-5xl m-auto text-white responsive-city-image-max:px-6">
-                <CommentOverview comments={comments} ratings={ratings}/>
+                {
+                    !createComment
+                        ? <CommentOverview comments={comments} ratings={ratings} canRate={canRate} setCreateComment={setCreateComment}/>
+                        : <CreateComment userToken={userToken} cityId={cityId} cityName={cityName} setCreateComment={setCreateComment}/>
+                }
             </section>
         </Modal>
     )

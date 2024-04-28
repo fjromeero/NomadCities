@@ -6,17 +6,13 @@ import InfoSection from "./InfoSection"
 import RatingScores from "../ratings/RatingScores"
 import CommentSection from "./CommentSection"
 
-export default function CityInspect({ cityData, isAdmin, comments , id }) {
-    const [cityInfo, setCityInfo] = useState(cityData.info);
-    const [cityRatings, setCityRatings] = useState(cityData.ratings);
-    const [cityImages, setCityImages] = useState(cityData.images);
-
+export default function CityInspect({ userToken, cityData, comments, isAdmin, id }) {
     return (
         <div className="w-full">
-            <ImageCarrousel images={cityImages} className={" responsive-city-image-min:hidden"} />
+            <ImageCarrousel images={cityData.images} className={" responsive-city-image-min:hidden"} />
             <header className="max-w-[1400px] mx-auto flex justify-between auth-max:items-center auth-max:mx-5">
                 <div className="responsive-city-image-max:hidden">
-                    <h1 className="text-white text-3xl font-semibold font-sans">{cityInfo.name}</h1>
+                    <h1 className="text-white text-3xl font-semibold font-sans">{cityData.info.name}</h1>
                 </div>
                 {
                     isAdmin && (
@@ -26,11 +22,11 @@ export default function CityInspect({ cityData, isAdmin, comments , id }) {
                     )
                 }
             </header>
-            <ImageBento images={cityImages} className={" responsive-city-image-max:hidden auth-max:px-5"} />
-            <InfoSection cityInfo={cityInfo} />
+            <ImageBento images={cityData.images} className={" responsive-city-image-max:hidden auth-max:px-5"} />
+            <InfoSection cityInfo={cityData.info} />
             <section className="max-w-[1400px] mx-auto py-8 border-y border-[#DDDDDD] auth-max:mx-5">
                 {
-                    cityRatings.avgRating === 0 ? (
+                    cityData.ratings.avgRating === 0 ? (
                         <div className="mb-8">
                             <div className="inline-flex items-center">
                                 <span className="mr-2">
@@ -44,12 +40,12 @@ export default function CityInspect({ cityData, isAdmin, comments , id }) {
                             </div>
                         </div>
                     ) : (
-                        <RatingScores comments={comments} ratings={cityRatings} flowDefault="row"/>
+                        <RatingScores comments={comments} ratings={cityData.ratings} flowDefault="row"/>
                     )
                 }
             </section>
             {
-                comments.length !== 0 && <CommentSection comments={comments} ratings={cityRatings}/>
+                comments.length !== 0 && <CommentSection userToken={userToken} cityId={id} cityName={cityData.info.name} comments={comments} ratings={cityData.ratings} canRate={cityData.canRate}/>
             }
         </div>
     )
