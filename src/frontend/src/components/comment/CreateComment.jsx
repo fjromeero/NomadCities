@@ -4,7 +4,7 @@ import CommentForm from "./CommentForm";
 import CommentRatingsForm from "./CommentRatingsForm";
 import { createCommentOnCity } from "../../utils/client/comment";
 
-export default function CreateComment({userToken, cityId, cityName, setCreateComment}) {
+export default function CreateComment({userToken, cityId, cityName, closeModal}) {
     const [creationStep, setCreationStep] = useState(1);
     const [commentData, setCommentData] = useState({
         "avgRating": 1,
@@ -12,6 +12,7 @@ export default function CreateComment({userToken, cityId, cityName, setCreateCom
         "comment": "",
         "pricePerMonth": 0,
     });
+    
     const [ratings, setRatings] = useState({
         "internetConnection": 1,
         "coworkingSpaces": 1,
@@ -23,8 +24,28 @@ export default function CreateComment({userToken, cityId, cityName, setCreateCom
     });
     
     const cancelCreation = () => {
+        // Set all values to default
+        setCommentData({
+            "avgRating": 1,
+            "stayLength": 0,
+            "comment": "",
+            "pricePerMonth": 0,
+        })
+        setRatings({
+            "internetConnection": 1,
+            "coworkingSpaces": 1,
+            "healthService": 1,
+            "safety": 1,
+            "gastronomy": 1,
+            "meansOfTransport": 1,
+            "foreignFriendly": 1,
+        })
+
+        // Set creation step to first
         setCreationStep(1);
-        setCreateComment(false);
+
+        // Close modal
+        closeModal();
     }
 
     const confirmCreation = () => {

@@ -4,13 +4,14 @@ import Modal from "../Modal";
 import CommentOverview from "./CommentOverview";
 import CreateComment from "./CreateComment";
 
-const CommentModal = forwardRef(function CommentModal({ userToken, cityId, cityName, comments, ratings, canRate}, ref) {
+const CommentModal = forwardRef(function CommentModal({ userToken, cityId, cityName, comments, ratings, canRate, noComments}, ref) {
 
-    const [createComment, setCreateComment] = useState(false)
+    const [createComment, setCreateComment] = useState(noComments)
 
     const closeModal = () => {
         ref.current.close();
         document.body.classList.remove("overflow-y-hidden");
+        !noComments && setCreateComment(false);
     }
 
     return (
@@ -39,7 +40,7 @@ const CommentModal = forwardRef(function CommentModal({ userToken, cityId, cityN
                 {
                     !createComment
                         ? <CommentOverview comments={comments} ratings={ratings} canRate={canRate} setCreateComment={setCreateComment}/>
-                        : <CreateComment userToken={userToken} cityId={cityId} cityName={cityName} setCreateComment={setCreateComment}/>
+                        : <CreateComment userToken={userToken} cityId={cityId} cityName={cityName} closeModal={closeModal}/>
                 }
             </section>
         </Modal>

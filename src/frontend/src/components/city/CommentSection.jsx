@@ -6,7 +6,8 @@ import CommentModal from "../comment/CommentModal"
 
 export default function CommentSection({userToken, cityId, cityName, ratings, comments, canRate}) {
 
-    const modalRef = useRef()
+    const modalRef = useRef();
+    const noComments = comments.length === 0;
 
     const showModal = () => {
         modalRef.current.showModal();
@@ -54,12 +55,12 @@ export default function CommentSection({userToken, cityId, cityName, ratings, co
                     })
                 }
             </div>
-            <div className="mt-10">
+            <div className={comments.length !== 0 && "mt-10"}>
                 <button id="show-button" className="py-3 px-5 border border-white rounded-lg cursor-pointer w-fit responsive-city-image-max:w-full" onClick={() => showModal()}>
-                    {`Show the ${comments.length} ratings`}
+                    {comments.length !== 0 ? `Show the ${comments.length} ratings` : "Add a comment"}
                 </button>
             </div>
-            <CommentModal cityId={cityId} cityName={cityName} userToken={userToken} comments={comments} ratings={ratings} canRate={canRate} ref={modalRef}/>
+            <CommentModal cityId={cityId} cityName={cityName} userToken={userToken} comments={comments} ratings={ratings} canRate={canRate} noComments={noComments} ref={modalRef}/>
         </section>
     )
 }

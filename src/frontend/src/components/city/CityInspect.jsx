@@ -24,7 +24,7 @@ export default function CityInspect({ userToken, cityData, comments, isAdmin, id
             </header>
             <ImageBento images={cityData.images} className={" responsive-city-image-max:hidden auth-max:px-5"} />
             <InfoSection cityInfo={cityData.info} />
-            <section className="max-w-[1400px] mx-auto py-8 border-y border-[#DDDDDD] auth-max:mx-5">
+            <section className={`max-w-[1400px] mx-auto py-8 border-[#DDDDDD] auth-max:mx-5 ${comments.length === 0 ? "border-t" : "border-y"}`}>
                 {
                     cityData.ratings.avgRating === 0 ? (
                         <div className="mb-8">
@@ -44,9 +44,7 @@ export default function CityInspect({ userToken, cityData, comments, isAdmin, id
                     )
                 }
             </section>
-            {
-                comments.length !== 0 && <CommentSection userToken={userToken} cityId={id} cityName={cityData.info.name} comments={comments} ratings={cityData.ratings} canRate={cityData.canRate}/>
-            }
+            <CommentSection userToken={userToken} cityId={id} cityName={cityData.info.name} comments={comments} ratings={cityData.ratings} canRate={cityData.canRate}/>
         </div>
     )
 }
