@@ -132,6 +132,7 @@ def upgrade() -> None:
     op.create_table('assign_city',
     sa.Column('id_city', sa.Integer(), nullable=False),
     sa.Column('id_city_tag', sa.Integer(), nullable=False),
+    sa.Column('count', sa.Integer(), default=1),
     sa.ForeignKeyConstraint(['id_city'], ['city.id'], ),
     sa.ForeignKeyConstraint(['id_city_tag'], ['city_tag.id'], ),
     sa.PrimaryKeyConstraint('id_city', 'id_city_tag')

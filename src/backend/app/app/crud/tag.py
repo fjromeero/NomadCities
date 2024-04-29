@@ -5,7 +5,8 @@ from typing import List
 from app.db.models.user_tag import UserTag
 from app.db.models.city_tag import CityTag
 from app.db.models.assign_user import AssignUser
-from app.models.tag import Tag
+from app.db.models.assign_city import AssignCity
+from app.models.tag import Tag, CityTagOut
 from app.crud.user import search_user_by_id
 
 
@@ -102,3 +103,46 @@ def create_city_tag(*, session: Session, new_tag: Tag):
 
 def search_all_city_tags(*, session: Session) -> List[CityTag]:
     return session.query(CityTag).all()
+
+
+def assign_tag_to_city(*, session: Session, city_id: int, new_tag: Tag) -> CityTagOut:
+    """
+    Assign a tag to a city if it is not already assigned. In other case, increment the count of the assignation.
+
+    :param session: SQLAlchemy session
+    :param city_id: city id
+    :param new_tag: tag to assign
+    """
+    tag = search_city_tag_by_name(session=session, tag_name=new_tag.name)
+    if not tag:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"There is not a city tag with name {new_tag.name}",
+        )
+    else:
+        assignation = session.query(AssignCity).filter(AssignCity.id_city == city_id, AssignCity.id_city_tag == tag.id).first()
+        if not assignation:
+            assignation = AssignCity(
+                id_city=city_id,
+                id_city_tag=tag.id,
+            )
+            session.add(assignation)
+        else:
+            setattr(assignation, "count", assignation.count+1)
+
+        session.commit()
+        session.refresh(assignation)
+        return CityTagOut(
+            name=tag.name,
+            count=assignation.count,
+        )
+    
+
+def search_city_assigned_tags(*, session: Session, city_id: int):
+    """
+    Get all assigned tags to a city
+    """
+    return session.query(AssignCity, CityTag.name)\
+                  .join(CityTag, AssignCity.id_city_tag == CityTag.id)\
+                  .filter(AssignCity.id_city == city_id)\
+                  .all()

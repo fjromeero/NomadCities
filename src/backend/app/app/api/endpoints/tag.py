@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from typing import Any, List
+from typing import List
 
 router = APIRouter()
 
@@ -7,16 +7,19 @@ from app.api.deps import (
     SessionDep,
     CurrentUser, 
     get_current_superuser,
+    get_current_user
 )
-from app.models.tag import Tag, Tags
+from app.models.tag import Tag, Tags, CityTagOut
 from app.crud.tag import (
     create_user_tag,
     create_city_tag,
     search_user_tags,
     search_all_user_tags,
     search_all_city_tags,
+    search_city_assigned_tags,
     assign_user_tag,
-    remove_user_tag
+    assign_tag_to_city,
+    remove_user_tag,
 )
 
 
@@ -82,3 +85,27 @@ async def city_tag_creation(session: SessionDep, tag: Tag) -> Tag:
 async def get_all_city_tags(session: SessionDep) -> List[Tag]:
     city_tags = search_all_city_tags(session=session)
     return [Tag(name=tag.name) for tag in city_tags]
+
+
+@router.get('/citytag/{city_id}', dependencies=[Depends(get_current_user)])
+async def get_city_tags(session: SessionDep, city_id: int) -> List[CityTagOut]:
+    """
+    Get city tags assigned to a city
+    """
+    tags_assigned = search_city_assigned_tags(session=session, city_id=city_id)
+    return [CityTagOut(name=tag_name, count=assigned.count) for assigned, tag_name in tags_assigned] 
+
+
+@router.patch('/citytag/{city_id}', dependencies=[Depends(get_current_user)])
+async def assign_citytags(session: SessionDep, city_id: int, city_tags: Tags) -> List[CityTagOut]:
+    """
+    Assign a list of tags to a city.
+    """
+    assignations = []
+
+    for tag in city_tags.tags:
+        assigned_tag = assign_tag_to_city(session=session, city_id=city_id, new_tag=tag)
+        if assigned_tag:
+            assignations.append(assigned_tag)
+
+    return assignations

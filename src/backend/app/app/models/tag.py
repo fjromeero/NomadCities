@@ -6,3 +6,7 @@ class Tag(BaseModel):
 
 class Tags(BaseModel):
     tags: List[Tag]
+
+
+class CityTagOut(Tag):
+    count: int
