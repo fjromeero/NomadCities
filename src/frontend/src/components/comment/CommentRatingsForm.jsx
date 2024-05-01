@@ -1,6 +1,6 @@
 import StarForm from "./StarForm";
 
-export default function CommentRatingsForm({ratings, setRatings, confirmCreation, cancelCreation}) {
+export default function CommentRatingsForm({ratings, setRatings, setCreationStep, cancelCreation}) {
     return (
         <div className="w-full m-auto flex flex-col gap-20 py-20">
             <header>
@@ -184,8 +184,8 @@ export default function CommentRatingsForm({ratings, setRatings, confirmCreation
                 }} />
             </section>
             <div className="flex gap-5">
-                <button onClick={() => confirmCreation()} id='next-button' className="inline-flex items-center px-8 py-4 bg-[#7066f2] border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-[#453f96] transition ease-in-out duration-150">
-                    Finish
+                <button onClick={() => setCreationStep(3)} id='next-button' className="inline-flex items-center px-8 py-4 bg-[#7066f2] border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-[#453f96] transition ease-in-out duration-150">
+                    Next
                 </button>
                 <button onClick={() => cancelCreation()} id='cancel-button' className="inline-flex items-center px-8 py-4 bg-red-700 border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-red-800 transition ease-in-out duration-150">
                     Cancel

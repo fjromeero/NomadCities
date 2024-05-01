@@ -2,7 +2,10 @@ import { useState } from "react";
 
 import CommentForm from "./CommentForm";
 import CommentRatingsForm from "./CommentRatingsForm";
+import TagAssignation from "./TagAssignation";
+
 import { createCommentOnCity } from "../../utils/client/comment";
+import { assignCityTags } from "../../utils/client/citytag";
 
 export default function CreateComment({userToken, cityId, cityName, closeModal}) {
     const [creationStep, setCreationStep] = useState(1);
@@ -22,9 +25,10 @@ export default function CreateComment({userToken, cityId, cityName, closeModal})
         "meansOfTransport": 1,
         "foreignFriendly": 1,
     });
+
+    const [tagAssignation, setTagAssignation] = useState([]);
     
     const cancelCreation = () => {
-        // Set all values to default
         setCommentData({
             "avgRating": 1,
             "stayLength": 0,
@@ -40,22 +44,20 @@ export default function CreateComment({userToken, cityId, cityName, closeModal})
             "meansOfTransport": 1,
             "foreignFriendly": 1,
         })
-
-        // Set creation step to first
+        setTagAssignation([]);
         setCreationStep(1);
-
-        // Close modal
         closeModal();
     }
 
     const confirmCreation = () => {
         const createComment = async () => {
-            const response = await createCommentOnCity(userToken, cityId, commentData, ratings);
-            if (response.status === 200) {
+            const commentResponse = await createCommentOnCity(userToken, cityId, commentData, ratings);
+            const tagResponse = await assignCityTags(userToken, cityId, tagAssignation);
+
+            if (commentResponse.status===200 && tagResponse.status===200) {
                 window.location.replace(`/city/${cityId}`);
             }
         }
-
         createComment();
     }
 
@@ -64,7 +66,8 @@ export default function CreateComment({userToken, cityId, cityName, closeModal})
             {
                 {
                     1: <CommentForm cityName={cityName} commentData={commentData} setCommentData={setCommentData} cancelCreation={cancelCreation} setCreationStep={setCreationStep}/>,
-                    2: <CommentRatingsForm ratings={ratings} setRatings={setRatings} confirmCreation={confirmCreation} cancelCreation={cancelCreation}/>,
+                    2: <CommentRatingsForm ratings={ratings} setRatings={setRatings} setCreationStep={setCreationStep} cancelCreation={cancelCreation}/>,
+                    3: <TagAssignation userToken={userToken} setTagAssignation={setTagAssignation} confirmCreation={confirmCreation} cancelCreation={cancelCreation}/>
                 }[creationStep]
             }
         </>

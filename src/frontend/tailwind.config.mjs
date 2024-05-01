@@ -47,7 +47,9 @@ export default {
 				'preview': 'minmax(100px, 400px)',
 				'main': 'minmax(min-content, max-content)',
 			},
-			
+			boxShadow: {
+				'tag-selected': '0 0 0 3px white',
+			},
 		},
 	},
 	plugins: [],

@@ -40,3 +40,29 @@ export async function createCityTag(userToken, tagName) {
         console.log(error);
     }
 }
+
+
+export async function assignCityTags(userToken, cityId, tags) {
+    try {
+        const response = await fetch(`${CLIENT_BACKEND_BASE_URL}/citytag/${cityId}`, {
+            method: "PATCH",
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tags: tags,
+            }),
+        });
+
+        const json = await response.json();
+
+        return {
+            status: response.status,
+            data: response.status === 200 ? json : json.detail,
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
