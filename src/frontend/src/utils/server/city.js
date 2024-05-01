@@ -71,3 +71,24 @@ export async function getAllCities(){
         console.log(error)
     }
 }
+
+export async function getCityTags(userToken, cityId){
+    try {
+        const response = await fetch(`${backendBaseUrl}/citytag/${cityId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+            },
+        })
+
+        const json = await response.json();
+
+        return {
+            status: response.status,
+            data: response.status === 200 ? json : json.detail,
+        }
+
+    } catch (error){
+        console.error(error)
+    }
+}

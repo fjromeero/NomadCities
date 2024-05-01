@@ -1,12 +1,11 @@
-import { useState } from "react"
-
 import ImageBento from "./ImageBento"
 import ImageCarrousel from "./ImageCarrousel"
 import InfoSection from "./InfoSection"
 import RatingScores from "../ratings/RatingScores"
 import CommentSection from "./CommentSection"
+import TagSection from "./TagsSection"
 
-export default function CityInspect({ userToken, cityData, comments, isAdmin, id }) {
+export default function CityInspect({ userToken, cityData, comments, tags, isAdmin, id }) {
     return (
         <div className="w-full">
             <ImageCarrousel images={cityData.images} className={" responsive-city-image-min:hidden"} />
@@ -24,6 +23,7 @@ export default function CityInspect({ userToken, cityData, comments, isAdmin, id
             </header>
             <ImageBento images={cityData.images} className={" responsive-city-image-max:hidden auth-max:px-5"} />
             <InfoSection cityInfo={cityData.info} />
+            <TagSection tags={tags}/>
             <section className={`max-w-[1400px] mx-auto py-8 border-[#DDDDDD] auth-max:mx-5 ${comments.length === 0 ? "border-t" : "border-y"}`}>
                 {
                     cityData.ratings.avgRating === 0 ? (
