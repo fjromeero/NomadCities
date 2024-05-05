@@ -82,6 +82,6 @@ def test_city_comments_inspection(client: TestClient,db: Session , regular_user_
 def test_get_invalid_city_comments(client: TestClient,db: Session , regular_user_token_headers: Dict[str, str], test_city_id: int) -> None:
     r = client.get(f'/comments/{test_city_id+1}', headers=regular_user_token_headers)
 
-    assert r.status_code==404
+    assert r.status_code==400
     response = r.json()
-    assert response['detail']==f"No comments found for city with id {test_city_id+1}"
+    assert response['detail']==f"There is not a city with this id"
