@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
 from app.models.comment import CommentOnCreate
+from app.classes.sentiment_analysis import SentimentAnalisys
 from app.db.models.comment import Comment
 from app.db.models.user import User
 from app.crud.city import search_city_by_id
@@ -29,6 +30,8 @@ def can_post_comment(*, session: Session, id_user: int, city_id: int) -> bool:
 def create_comment(*, session: Session, id_user: int, comment: CommentOnCreate) -> Comment:
     city = search_city_by_id(session=session, city_id=comment.id_city)
     can = can_post_comment(session=session, id_user=id_user, city_id=comment.id_city)
+    sentiment = SentimentAnalisys.get_sentiment(comment.body)
+    
     if city and can:
         comment = Comment(
             id_city = comment.id_city,
@@ -44,6 +47,7 @@ def create_comment(*, session: Session, id_user: int, comment: CommentOnCreate) 
             means_of_transport = comment.means_of_transport,
             foreign_friendly = comment.foreign_friendly,
             stay_length = comment.stay_length,
+            polarity = sentiment,
         )
 
         session.add(comment)

@@ -46,6 +46,7 @@ async def comment_list(
             body=comment.body,
             rating=comment.rating,
             stay_length=comment.stay_length,
+            polarity=comment.polarity,
         )
         for comment, username in comments
     ]

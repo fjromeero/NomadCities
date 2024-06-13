@@ -24,4 +24,5 @@ class CommentOut(BaseComment):
     username: str
     date: datetime
     stay_length: int
+    polarity: int
     
