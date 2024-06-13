@@ -6,9 +6,14 @@ from sqlalchemy.orm import Session
 from typing import Any
 
 from app.core.settings import settings
-from app.api.deps import CurrentUser, SessionDep
+from app.api.deps import CurrentUser, SessionDep, get_current_user
+from app.models.city import CityOut
+from app.models.city_image import CityImage
 from app.models.user import UserOnCreate, UserOut, UserOnUpdate, UserOnUpdatePassword
 from app.models.token import Token
+from app.crud.city import search_city_by_id
+from app.crud.city_image import search_city_images
+from app.crud.recommendations import get_user_suggested_cities
 from app.crud.user import (
     create_user,
     search_user_by_username, 
@@ -133,3 +138,25 @@ async def update_me(session: SessionDep ,current_user: CurrentUser, user_update:
 @router.patch('/me/change-password')
 async def change_password_me(session: SessionDep, current_user: CurrentUser, password_changes: UserOnUpdatePassword) -> Any:
     update_user_password(session=session, user_id=current_user.id, password_changes=password_changes)
+    
+    
+@router.get('/me/recommendations', dependencies=[Depends(get_current_user)])
+async def get_recommendations(session: SessionDep, current_user: CurrentUser) -> list[CityOut]:
+    suggestions = get_user_suggested_cities(session=session, id_user=current_user.id)
+    cities = []
+    if suggestions:
+        for suggestion in suggestions:
+            city = search_city_by_id(session=session, city_id=suggestion.id_city)
+            images = search_city_images(session=session, city_id=city.id)
+            image_path = images[0].path if images else ''
+            cities.append(
+                CityOut(
+                    id= city.id,
+                    name=city.name,
+                    country=city.country,
+                    avg_rating= round(city.avg_rating,2),
+                    avg_price_per_month= round(city.avg_price_per_month, 2),
+                    image=CityImage(path=image_path),
+                )
+            )
+    return cities

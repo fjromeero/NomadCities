@@ -129,3 +129,28 @@ async def search_city(
         )
         
     return cities
+
+
+@router.get('/city/{id}/recommendations', dependencies=[Depends(get_current_user)])
+async def get_city_recommendations(
+    session: SessionDep,
+    id: int,
+)-> list[CityOut]:
+    search_city_by_id(session=session, city_id=id)
+    suggestions = get_city_suggested_cities(session=session, id_city=id)
+    cities = []
+    for suggestion in suggestions:
+        city = search_city_by_id(session=session, city_id=suggestion.id_suggestion)
+        images = search_city_images(session=session, city_id=city.id)
+        image_path = images[0].path if images else ''
+        cities.append(
+            CityOut(
+                id= city.id,
+                name=city.name,
+                country=city.country,
+                avg_rating= round(city.avg_rating,2),
+                avg_price_per_month= round(city.avg_price_per_month, 2),
+                image=CityImage(path=image_path),
+            )
+        )
+    return cities
