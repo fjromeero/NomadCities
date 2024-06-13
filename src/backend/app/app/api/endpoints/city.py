@@ -1,12 +1,14 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from typing import Any, List, Optional
 
-from app.api.deps import get_current_superuser, CurrentUser, SessionDep
+from app.api.deps import get_current_user, get_current_superuser, CurrentUser, SessionDep
 from app.models.city import CityOnCreate, CityInspect, CityOnUpdate, Cities, CityOut
 from app.models.city_image import CityImage
 from app.crud.city import create_city, search_city_by_id, update_city_data, get_all_cities
 from app.crud.city_image import create_city_images, search_city_images
 from app.crud.comment import can_post_comment
+from app.crud.recommendations import get_city_suggested_cities
+from app.classes.elasticsearch import ElasticSearch
 
 router = APIRouter()
 
@@ -18,6 +20,13 @@ async def city_create(
 ) -> Any:
     city_created = create_city(session=session, new_city=city_data)
     await create_city_images(session=session, city_id=city_created.id , images=images)
+    await ElasticSearch.add_document(
+        index_name='cities',
+        id=city_created.id,
+        document={
+            'description': city_created.description,
+        }
+    )
 
     return city_created.id
 
@@ -58,7 +67,20 @@ async def update_city(
     updated_data: CityOnUpdate = Depends(CityOnUpdate.as_form),
     newImages: Optional[List[UploadFile]] = File(None),
 ) -> Any:
+
+    city = search_city_by_id(session=session, city_id=id)
+
+    if city.description != updated_data.description:
+        await ElasticSearch.update_document(
+            index_name='cities',
+            id=city.id,
+            document={
+                'description': updated_data.description,
+            }
+        )
+
     update_city_data(session=session, city_id=id, updated_data=updated_data)
+
     if newImages:
         await create_city_images(session=session, city_id=id, images=newImages)
 
@@ -81,3 +103,29 @@ async def cities(session: SessionDep) -> Cities:
         )
 
     return Cities(cities=cities_list)
+
+
+@router.get('/search')
+async def search_city(
+    session: SessionDep,
+    query: str,
+) -> list[CityOut]:
+    city_ids = await ElasticSearch.search(index_name='cities', field='description', query_value=query)
+    cities = []
+    
+    for city_id in city_ids:
+        city = search_city_by_id(session=session, city_id=city_id)
+        images = search_city_images(session=session, city_id=city_id)
+        image_path = images[0].path if images else ''
+        cities.append(
+            CityOut(
+                id= city.id,
+                name=city.name,
+                country=city.country,
+                avg_rating= round(city.avg_rating,2),
+                avg_price_per_month= round(city.avg_price_per_month, 2),
+                image=CityImage(path=image_path),
+            )
+        )
+        
+    return cities
