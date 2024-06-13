@@ -1,0 +1,8 @@
+POSTGRES_SERVER=db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=passwd
+POSTGRES_DB=app,test
+ELASTIC_API_KEY='Y3l6dXNJOEJNc2hORXRNZTNWNm86dlRvaEhQaG1RNFdtS0JleklmbFoxdw=='
+ES_PORT=9200
+* * * * * root /app/venv/bin/python3 /app/city_recommendations.py >> /var/log/cron.log 2>&1
+# Empty line
