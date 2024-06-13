@@ -6,7 +6,7 @@ class UserBase(BaseModel):
     username: Optional[str] = None
     email: Optional[EmailStr] = None
     is_admin: Optional[bool] = False
-    img: Optional[str] = "static/images/default_pfp.png"
+    img: Optional[str] = "static/images/users/default_pfp.png"
 
 # Properties to receive via API on creation
 class UserOnCreate(UserBase):

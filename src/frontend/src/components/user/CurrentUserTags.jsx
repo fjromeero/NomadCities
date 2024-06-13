@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import UserTag from "../tag/UserTag";
 import TagModal from "../tag/TagModal";
-import { getCurrentUserTags } from "../../utils/client/UserTag";
+import { getCurrentUserTags } from "../../utils/client/usertag";
 
 export default function CurrentUserTags({ userToken, setSuccessOnUpdate}) {
     const [tags, setTags] = useState([]);

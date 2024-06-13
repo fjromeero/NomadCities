@@ -2,7 +2,7 @@ import { forwardRef, useState, useEffect } from "react";
 
 import Modal from "../Modal";
 import UserTag from "./UserTag";
-import { getAllUserTags, addCurrentUserTags, removeCurrentUserTags } from "../../utils/client/UserTag";
+import { getAllUserTags, addCurrentUserTags, removeCurrentUserTags } from "../../utils/client/usertag";
 
 const TagModal = forwardRef(function TagModal({ tags, userToken, setTags, setSuccessOnUpdate }, ref) {
     const [assignedTags, setAssignedTags] = useState(tags);

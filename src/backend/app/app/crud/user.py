@@ -26,6 +26,11 @@ def search_user_by_username(*, session: Session, username: str) -> Any:
 def search_user_by_email(*, session: Session, email: str) -> Any:
     return session.query(User).filter(User.email == email).first()
 
+
+def search_user_by_id(*, session: Session, id: int) -> User | None:
+    return session.query(User).filter(User.id == id).first()
+
+
 def update_user_profile(*, session: Session, user_id: int, changes: Union[UserOnUpdate, Dict[str, Any]]) -> User:
     user = session.query(User).filter(User.id == user_id).first()
 

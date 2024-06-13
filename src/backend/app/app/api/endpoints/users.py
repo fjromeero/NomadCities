@@ -90,7 +90,7 @@ async def me_img(current_user: CurrentUser) -> Any:
 @router.post("/me/img")
 async def update_me_img(session: SessionDep ,current_user: CurrentUser, image: UploadFile):
     try:
-        path = "static/images/"+image.filename
+        path = "static/images/users/"+image.filename
         content = await image.read()
         with open(path, 'wb+') as destination:
             destination.write(content)

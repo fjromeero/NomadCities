@@ -1,3 +1,14 @@
-export const PUBLIC_ROUTES = ["/"];
-export const AUTH_ROUTES = ["/login", "/signup"];
-export const ADMIN_ROUTES = ["/admin"];
+export const PUBLIC_ROUTES = [
+    "/", 
+    "/logout"
+];
+
+export const AUTH_ROUTES = [
+    "/login", 
+    "/signup"
+];
+
+export const ADMIN_ROUTES = [
+    "/admin",
+    /^\/city\/\d+\/edit$/,
+];

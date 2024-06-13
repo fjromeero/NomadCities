@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 
-const Modal = forwardRef(function Modal({children},ref){
+const Modal = forwardRef(function Modal({children, className = ''},ref){
     return (
-        <dialog ref={ref} >
+        <dialog className={className} ref={ref}>
             {children}
         </dialog>
     );

@@ -21,7 +21,7 @@ if(auth){
 
 <Layout title={title}>
     {auth ? <AuthenticatedHeader isAdmin={isAdmin} img={img}/> : <NonAuthenticatedHeader/>}
-    <main class="bg-[#121212] min-w-screen flex flex-grow-3 shrink basis-0 justify-center p-8 pt-20">
+    <main class="bg-[#121212] min-w-screen flex flex-grow-3 shrink basis-0 justify-center p-8 pt-20 auth-max:p-0 auth-max:pb-10">
         <slot/>
     </main>
 </Layout>

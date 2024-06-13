@@ -2,6 +2,7 @@ from sqlalchemy import Integer, Column, ForeignKey, Text, DateTime, Boolean, Flo
 from sqlalchemy.sql import func
 from app.db.engine import Base
 
+
 class Comment(Base):
     __tablename__ = "comment"
 
@@ -14,3 +15,11 @@ class Comment(Base):
     reported = Column(Boolean, default=False, index=True)
     polarity = Column(Integer, index=True)
     price_per_month = Column(Float)
+    internet_connection = Column(Integer, nullable=False)
+    coworking_spaces = Column(Integer, nullable=False)
+    health_service = Column(Integer, nullable=False)
+    safety = Column(Integer, nullable=False)
+    gastronomy = Column(Integer, nullable=False)
+    means_of_transport = Column(Integer, nullable=False)
+    foreign_friendly = Column(Integer, nullable=False)
+    stay_length = Column(Integer, nullable=False)

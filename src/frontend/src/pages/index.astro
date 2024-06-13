@@ -1,5 +1,11 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import CitiesShowcase from "../components/city/CitiesShowcase";
+import {getAllCities} from "../utils/server/city"
+
+const data = await getAllCities()
 ---
 
-<MainLayout title="NomadCities" />
+<MainLayout title="NomadCities">
+    <CitiesShowcase cities={data.cities}/>
+</MainLayout>
