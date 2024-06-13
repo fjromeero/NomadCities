@@ -1,6 +1,5 @@
 from typing import Any, Dict, Optional, Union, List
 from pydantic import BaseSettings, AnyHttpUrl, PostgresDsn, validator
-import secrets
 
 class Settings(BaseSettings):
     # Get the .env vars for the database credentials
@@ -67,5 +66,34 @@ class Settings(BaseSettings):
     # SECRET KEY FOR JWT. You can change it by running on a shell:
     # openssl rand -hex 32
     SECRET_KEY = "f881d4607b29c5dbbc547fc9b88f46ee51247c9bd66bae08be735a8d2e9fa43c"
+
+    # Elasticsearch port
+    ES_PORT: str
+
+    # Elasticsearch api key
+    ELASTIC_API_KEY: str
+
+    # City index analiser
+    CITY_ANALISER = {
+        "settings": {
+            "analysis": {
+                "analyzer": {
+                    "my_analyzer": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": ["porter_stem", "lowercase", "stop"],
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "properties": {
+                "description": {
+                    "type": "text",
+                    "analyzer": "my_analyzer"
+                }
+            }
+        }
+    }
 
 settings = Settings()
