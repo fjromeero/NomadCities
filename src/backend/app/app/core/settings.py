@@ -81,7 +81,7 @@ class Settings(BaseSettings):
                     "my_analyzer": {
                         "type": "custom",
                         "tokenizer": "standard",
-                        "filter": ["porter_stem", "lowercase", "stop"],
+                        "filter": ["lowercase", "stop", "porter_stem"],
                     }
                 }
             }
