@@ -76,3 +76,24 @@ export async function updateCityData(userToken, id, cityInfo, cityImage) {
         throw error; // Lanza la excepción para que pueda ser manejada por el código que llama a esta función.
     }
 }
+
+export async function searchCities(query) {
+    try {
+        const result = await fetch(`${CLIENT_BACKEND_BASE_URL}/search?` + new URLSearchParams({
+            query: query,
+        }), {
+            method: 'GET',
+        });
+
+        const response = await result.json();
+
+        return {
+            status: result.status,
+            data: result.status === 200 ? response : response.detail
+        }
+
+    } catch (error) {
+        console.error('Error during fetch:', error);
+        throw error;
+    }
+}
