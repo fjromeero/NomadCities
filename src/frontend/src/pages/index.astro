@@ -1,11 +1,20 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import CitiesShowcase from "../components/city/CitiesShowcase";
-import {getAllCities} from "../utils/server/city"
+import { getAllCities } from "../utils/server/city"
+import { getUserRecommendations } from "../utils/server/users"
+
+let userRecommendations = [];
+
+if (Astro.cookies.has("user")) {
+    const userToken = Astro.cookies.get("user").value;
+    const userRecommendationsData = await getUserRecommendations(userToken);
+    userRecommendations = userRecommendationsData.data;
+}
 
 const data = await getAllCities()
 ---
 
 <MainLayout title="NomadCities">
-    <CitiesShowcase cities={data.cities}/>
+    <CitiesShowcase client:only cities={data.cities} userRecommendations={userRecommendations} authenticated={Astro.cookies.has("user")}/>
 </MainLayout>
