@@ -22,7 +22,7 @@ RUN python3 -m venv /app/venv
 RUN /app/venv/bin/pip install -r /app/requirements.txt
 
 # Dar permisos de ejecución al archivo de la aplicación (si es necesario)
-RUN chmod +x /app/app.py
+RUN chmod +x /app/city_recommendations.py
 
 # Establecer el entorno virtual como el intérprete de Python por defecto
 ENV PATH="/app/venv/bin:$PATH"
