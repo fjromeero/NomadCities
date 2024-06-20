@@ -1,3 +1,4 @@
+import os
 from sqlalchemy.orm import Session
 from typing import Any, List
 from fastapi import UploadFile
@@ -13,6 +14,9 @@ async def create_city_image(*, session: Session, city_id: str, image: UploadFile
     city = search_city_by_id(session=session, city_id=city_id)
     if city:
         try:
+            directory = "static/images/cities/"
+            if not os.path.exists(directory):
+                os.makedirs(directory)   
             path = "static/images/cities/"+image.filename
             content = await image.read()
             with open(path, 'wb+') as destination:
