@@ -1,6 +1,6 @@
 export default function TagSection({ tags }) {
     return (
-        <div className="max-w-[1400px] mx-auto border-t border-[#DDDDDD] text-white">
+        <div className="max-w-[1400px] mx-auto border-t border-[#DDDDDD] text-white auth-max:mx-5">
             <div className="max-w-4xl pb-8">
                 <h2 className="text-2xl font-semibold font-sans mt-8">What this city offers</h2>
                 <div className="flex flex-wrap gap-2 mt-4">
