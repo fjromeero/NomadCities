@@ -75,3 +75,25 @@ export async function getCurrentUserImage(userToken){
         console.log(error)
     }
 }
+
+export async function getUserRecommendations(userToken) {
+    try {
+        const result = await fetch(`${backendBaseUrl}/me/recommendations`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+            },
+        });
+
+        const response = await result.json();
+
+        return {
+            status: result.status,
+            data: result.status === 200 ? response : response.detail
+        }
+
+    } catch (error) {
+        console.error('Error during fetch:', error);
+        throw error;
+    }
+}

@@ -18,6 +18,8 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 httpx = "^0.26.0"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 alembic-utils = "^0.8"
+elasticsearch = {extras = ["async"], version = "^8.13.2"}
+nltk = "^3.8.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.4"

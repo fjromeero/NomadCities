@@ -92,3 +92,25 @@ export async function getCityTags(userToken, cityId){
         console.error(error)
     }
 }
+
+export async function getCityRecommendations(userToken, id) {
+    try {
+        const result = await fetch(`${backendBaseUrl}/city/${id}/recommendations`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+            },
+        });
+
+        const response = await result.json();
+
+        return {
+            status: result.status,
+            data: result.status === 200 ? response : response.detail
+        }
+
+    } catch (error) {
+        console.error('Error during fetch:', error);
+        throw error;
+    }
+}

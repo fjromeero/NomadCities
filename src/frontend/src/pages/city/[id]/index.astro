@@ -1,5 +1,5 @@
 ---
-import { getCityDetails } from "../../../utils/server/city";
+import { getCityDetails, getCityRecommendations } from "../../../utils/server/city";
 import { isCurrentUserAdmin } from "../../../utils/server/users";
 import { getCommentsFromCity } from "../../../utils/server/comments";
 import { getCityTags } from "../../../utils/server/city";
@@ -10,9 +10,11 @@ import MainLayout from "../../../layouts/MainLayout.astro";
 const {id} = Astro.params;
 const userToken = Astro.cookies.get("user").value;
 const isAdmin = await isCurrentUserAdmin(userToken)
+
 let cityData = {}
 let comments = []
 let cityTags = []
+let cityRecommendations = []
 
 const response = await getCityDetails(userToken, id);
 
@@ -20,13 +22,27 @@ if(response.status!=200){
     return Astro.redirect('/');
 }else{
     cityData = response.data;
+
     const commentsDataResponse = await getCommentsFromCity(userToken, id)
     comments = commentsDataResponse.data
+
     const cityTagsResponse = await getCityTags(userToken, id)
     cityTags = cityTagsResponse.data
+
+    const cityRecommendationsResponse = await getCityRecommendations(userToken, id)
+    cityRecommendations = cityRecommendationsResponse.data;
 }
 ---
 
 <MainLayout title='NomadCities - City'>
-    <CityInspect client:only userToken={userToken} cityData={cityData} tags={cityTags} isAdmin={isAdmin} id={id} comments={comments}/>
+    <CityInspect 
+        client:only 
+        userToken={userToken} 
+        cityData={cityData} 
+        tags={cityTags} 
+        isAdmin={isAdmin} 
+        id={id} 
+        comments={comments} 
+        cityRecommendations={cityRecommendations}
+    />
 </MainLayout>

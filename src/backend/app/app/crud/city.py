@@ -27,7 +27,7 @@ def create_city(*, session: Session, new_city: CityOnCreate):
             detail='There is alredy a city with this name'
         )
     
-def search_city_by_id(*, session: Session, city_id: int) -> Any:
+def search_city_by_id(*, session: Session, city_id: int) -> City:
     city = session.query(City).filter(City.id==city_id).first()
     if not city:
         raise HTTPException(

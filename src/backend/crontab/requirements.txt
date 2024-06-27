@@ -1,0 +1,8 @@
+elasticsearch
+pandas
+scikit-learn
+SQLAlchemy
+psycopg2-binary
+scipy
+surprise
+tenacity
