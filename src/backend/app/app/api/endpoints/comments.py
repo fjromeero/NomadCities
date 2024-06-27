@@ -22,6 +22,7 @@ async def comment_create(
         date=comment.date,
         rating=comment.rating,
         stay_length=comment.stay_length,
+        polarity=comment.polarity,
     )
 
 
